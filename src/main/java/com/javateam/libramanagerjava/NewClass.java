@@ -10,7 +10,24 @@ package com.javateam.libramanagerjava;
  */
 public class NewClass {
     
-    public static void main(String[] args) {
-        System.out.println("abcsesádasdxe!");
+        public static đăngký(string email, string passWord){
+//        email có phải là định dạng @gmail.
+//        có email hay không có rồi thì không cho tiếp tục
+//        mã hóa mật khảu
+//        thông báo thành công hoặc thất bại
+        try{
+//            có email hay không có rồi
+        } catch {
+            // báo lỗi người dùng là có email rồi
+        }
     }
+    
+    public static dangNhap(string email, string passWord){
+//        email có phải là định dạng @gmail.
+//        có email hay không
+//        có đúng pass hay không
+//        cho phép tiếp tục trả về true hoặc false
+
+    }
+    
 }
