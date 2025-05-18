@@ -9,8 +9,8 @@ package com.javateam.libramanagerjava;
  * @author haidv
  */
 public class NewClass {
-
+    
     public static void main(String[] args) {
-        System.out.println("abcsesxe!");
+        System.out.println("abcsesádasdxe!");
     }
 }
