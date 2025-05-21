@@ -1,8 +1,8 @@
 package BackEnd_Hai.newpackage;
 
-// CREATE TABLE cthegory (
+// CREATE TABLE cathegory (
 //     MaTL SERIAL PRIMARY KEY,
-//     TenTL VARCHAR(20),
+//     TenTL VARCHAR(50),
 //     MoTa VARCHAR(50)
 // );
 
@@ -11,7 +11,5 @@ public class Cathegory {
     private String TenTL;
     private String MoTa;
     
-    void AddCathegoryForBook(int MaTL, int BookID) {
 
-    }
 }
