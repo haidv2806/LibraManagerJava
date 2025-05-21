@@ -9,7 +9,7 @@ public class Cathegory {
     private String TenTL;
     private String MoTa;
 
-    public String Cathegory(int maTL, String tenTL, String moTa) {
+    public String addCathegory(int maTL, String tenTL, String moTa) {
         this.MaTL = maTL;
         this.TenTL = tenTL;
         this.MoTa = moTa;
