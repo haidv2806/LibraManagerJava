@@ -7,6 +7,7 @@ package BackEnd_Hai.newpackage;
 //     NamXuatBan DATE,
 //     Gia MONEY,
 //     MoTa VARCHAR(1000),
+//     FOREIGN KEY (MaNXB) REFERENCES publisher(MaNXB)
 // );
 
 public class Books {
