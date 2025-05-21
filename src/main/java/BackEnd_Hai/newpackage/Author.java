@@ -8,6 +8,7 @@ package BackEnd_Hai.newpackage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Author {
@@ -20,7 +21,7 @@ public class Author {
         this.TenTG = tenTG;
         this.SoDT = soDT;
 
-        String sql = "INSERT INTO author (MaTG, TenTG, SoDT) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO author (MaTG, TenTG, SoDT) VALUES (?, ?, ?) RETURNING MaTG";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -29,18 +30,40 @@ public class Author {
             stmt.setString(3, SoDT);
             stmt.executeUpdate();
 
-            return "Thêm tác giả thành công";
+            return stmt.executeQuery().getString("TenTG");
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    public int getMaTG(String tenTG) {
+        String sql = "SELECT * FROM author WHERE TenTG = ?";
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, tenTG);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("MaTG");
+            } else {
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 
     public String getTenTG(int MaTG) {
         String sql = "SELECT TenTG FROM author WHERE MaTG = ?";
 
-        try (Connection conn = Database.getConnection();
+        try (
+                Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, MaTG);
             return stmt.executeQuery().getString("TenTG");
