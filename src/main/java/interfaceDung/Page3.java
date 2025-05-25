@@ -1,0 +1,129 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package interfaceDung;
+import javax.swing.*;
+import java.awt.*;
+import javax.swing.table.DefaultTableModel;
+/**
+ *
+ * @author admin
+ */
+public class Page3 extends JFrame{
+    private JFrame parent;
+    private DefaultTableModel model;
+
+    public Page3(JFrame parent, String bookId, String bookName) {
+        this.parent = parent;
+        setTitle("Trang 3 - Danh sách tập sách");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        
+        // Panel trên cùng với nút đóng và tiêu đề
+        JPanel topPanel = new JPanel(new BorderLayout());
+        
+        // Nút đóng (X màu đỏ)
+        JButton closeButton = new JButton("X");
+        closeButton.setForeground(Color.RED);
+        closeButton.setBorderPainted(false);
+        closeButton.setContentAreaFilled(false);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 16));
+        closeButton.addActionListener(e -> {
+            parent.setVisible(true);
+            dispose();
+        });
+        
+        // Nút thêm tập mới
+        JButton addVolumeButton = new JButton("Thêm tập mới");
+        addVolumeButton.setBackground(Color.GREEN);
+        addVolumeButton.addActionListener(e -> {
+            Page4 trang4 = new Page4(this, null);
+            trang4.setVisible(true);
+            setVisible(false);
+        });
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(closeButton);
+        buttonPanel.add(addVolumeButton);
+        
+        topPanel.add(buttonPanel, BorderLayout.EAST);
+        
+        // Tiêu đề sách
+        JLabel titleLabel = new JLabel(bookName + " | Phòng mô", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        topPanel.add(titleLabel, BorderLayout.CENTER);
+        
+        // Bảng danh sách tập sách
+        String[] columnNames = {"Mã tập", "Tên tập", "Ngày tạo", "Thao tác"};
+        Object[][] data = {
+            {"1", "Tập 1 của " + bookName, "28/06/26", ""},
+            {"2", "Tập 2 của " + bookName, "28/06/26", ""},
+            {"3", "Tập 3 của " + bookName, "28/06/26", ""},
+            {"4", "Tập 4 của " + bookName, "28/06/26", ""},
+            {"5", "Tập 5 của " + bookName, "28/06/26", ""},
+            {"6", "Tập 6 của " + bookName, "28/06/26", ""}
+        };
+        
+        model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 3;
+            }
+        };
+        
+        JTable table = new JTable(model);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.getColumnModel().getColumn(0).setPreferredWidth(100);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        
+        table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
+        table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JCheckBox()) {
+            @Override
+            protected void deleteRow(int row) {
+                int confirm = JOptionPane.showConfirmDialog(null, 
+                    "Bạn có chắc muốn xóa tập này?", "Xác nhận xóa", 
+                    JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    model.removeRow(row);
+                }
+            }
+
+            @Override
+            protected void editRow(int row) {
+                String volumeId = (String) model.getValueAt(row, 0);
+                String volumeName = (String) model.getValueAt(row, 1);
+                String date = (String) model.getValueAt(row, 2);
+
+                Page4 editPage = new Page4(Page3.this, volumeId);
+                editPage.setVolumeData(volumeName);
+                editPage.setVisible(true);
+                setVisible(false);
+            }
+        });
+        
+        mainPanel.add(topPanel, BorderLayout.NORTH);
+        mainPanel.add(new JScrollPane(table), BorderLayout.CENTER);
+        
+        add(mainPanel);
+    }
+    
+    public void addVolume(String volumeName, String date) {
+        model.addRow(new Object[]{String.valueOf(model.getRowCount() + 1), volumeName, date, ""});
+    }
+    
+    public void updateVolume(String volumeId, String volumeName, String date) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).equals(volumeId)) {
+                model.setValueAt(volumeName, i, 1);
+                model.setValueAt(date, i, 2);
+                break;
+            }
+        }
+    }
+}
