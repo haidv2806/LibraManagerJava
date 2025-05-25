@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class Books_Authors {
+public class Books_Authors extends Author{
     int MaTG;
     int MaSach;
 
@@ -36,11 +36,11 @@ public class Books_Authors {
     }
 
     public String MiddlewareAddBooksAuthors(String tenTG, int  maSach){
-        int MaTG = new Author().getMaTG(tenTG);
+        int MaTG = getMaTG(tenTG);
         if (MaTG != -1){
             return addBooksAuthors(MaTG, maSach);
         } else {
-            String maTG = new Author().addAuthor(0, tenTG, null);
+            String maTG = addAuthor(0, tenTG, null);
             if (maTG != null){
                 return addBooksAuthors(Integer.parseInt(maTG), maSach);
             } else {

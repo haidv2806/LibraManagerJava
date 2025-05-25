@@ -5,22 +5,22 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Cathegory {
-    private int MaTL;
-    private String TenTL;
-    private String MoTa;
+    // private int MaTL;
+    // private String TenTL;
+    // private String MoTa;
 
     public String addCathegory(int maTL, String tenTL, String moTa) {
-        this.MaTL = maTL;
-        this.TenTL = tenTL;
-        this.MoTa = moTa;
+        // this.MaTL = maTL;
+        // this.TenTL = tenTL;
+        // this.MoTa = moTa;
 
         String sql = "INSERT INTO cathegory (MaTL, TenTL, MoTa) VALUES (?, ?, ?)";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, MaTL);
-            stmt.setString(2, TenTL);
-            stmt.setString(3, MoTa);
+            stmt.setInt(1, maTL);
+            stmt.setString(2, tenTL);
+            stmt.setString(3, moTa);
             stmt.executeUpdate();
 
             return "Thêm thành công";

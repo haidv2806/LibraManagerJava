@@ -12,22 +12,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Author {
-    private int MaTG;
-    private String TenTG;
-    private String SoDT;
 
-    public String addAuthor(int maTG, String tenTG, String soDT) {
-        this.MaTG = maTG;
-        this.TenTG = tenTG;
-        this.SoDT = soDT;
-
+    protected String addAuthor(int maTG, String tenTG, String soDT) {
         String sql = "INSERT INTO author (MaTG, TenTG, SoDT) VALUES (?, ?, ?) RETURNING MaTG";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, MaTG);
-            stmt.setString(2, TenTG);
-            stmt.setString(3, SoDT);
+            stmt.setInt(1, maTG);
+            stmt.setString(2, tenTG);
+            stmt.setString(3, soDT);
             stmt.executeUpdate();
 
             return stmt.executeQuery().getString("TenTG");
@@ -37,7 +30,7 @@ public class Author {
         }
     }
 
-    public int getMaTG(String tenTG) {
+    protected int getMaTG(String tenTG) {
         String sql = "SELECT * FROM author WHERE TenTG = ?";
 
         try (
@@ -59,7 +52,7 @@ public class Author {
         }
     }
 
-    public String getTenTG(int MaTG) {
+    protected String getTenTG(int MaTG) {
         String sql = "SELECT TenTG FROM author WHERE MaTG = ?";
 
         try (
