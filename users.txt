@@ -1,0 +1,3 @@
+Username             HashedPassword                                              
+-------------------------------------------------------------------------------------------
+Vũ Ngọc Hân          $2a$10$cQnWZoKjHqT80siVf4Ex4.fiLyIIycblBrLtlOhyXuLLDyS.BGjH2
