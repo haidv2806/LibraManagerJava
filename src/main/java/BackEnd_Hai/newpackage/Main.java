@@ -6,17 +6,25 @@ public class Main {
     public static void main(String[] args) {
         try {
             Books books = new Books();
-            String result = books.BookMiddlewareAdd("Nhà xuất bản ABC", 1, "Sách hay", 100000, "Mô tả sách");
-            System.out.println("Kết quả thêm sách: " + result);
+            // String result = books.BookMiddlewareAdd("Nhà xuất bản ABC", 1, "Sách của đỗ
+            // hải tạo", 100000, "Mô tả sách");
+            // System.out.println("Kết quả thêm sách: " + result);
+
+            // String result2 = books.getAllBookCreated(1);
+            // System.out.println("các sách đã tạo: " + result2);
+
+            String result3 = books.getBookDetails(1);
+            System.out.println("thông tin chi tiết sách: " + result3);
         } catch (RuntimeException e) {
             e.printStackTrace();
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
 }
-
+// chcp 65001
 // thêm sách {xong}
-// xem chi tiết sách
+// xem danh sách sách {xong}
+// xem chi tiết sách {xong}
 // sửa thông tin sách
 // xóa sách
 // tìm kiếm sách {xongxong}

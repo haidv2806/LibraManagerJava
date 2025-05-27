@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Books {
@@ -32,19 +34,15 @@ public class Books {
 
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                JSONObject json = new JSONObject();
-                json.put("MaSach", rs.getInt("MaSach"));
-                json.put("MaNXB", rs.getInt("MaNXB"));
-                json.put("UserID", rs.getInt("UserID"));
-                json.put("TenSach", rs.getString("TenSach"));
-                json.put("Gia", rs.getInt("Gia"));
-                json.put("MoTa", rs.getString("MoTa"));
+            JSONObject json = new JSONObject();
+            json.put("MaSach", rs.getInt("MaSach"));
+            json.put("MaNXB", rs.getInt("MaNXB"));
+            json.put("UserID", rs.getInt("UserID"));
+            json.put("TenSach", rs.getString("TenSach"));
+            json.put("Gia", rs.getInt("Gia"));
+            json.put("MoTa", rs.getString("MoTa"));
 
-                return json.toString();
-            } else {
-                throw new RuntimeException("Không có bản ghi nào được trả về sau khi thêm sách.");
-            }
+            return json.toString();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,5 +65,68 @@ public class Books {
         String result = addBook(MaNXB, userID, tenSach, gia, moTa);
 
         return result;
+    }
+
+    public String getAllBookCreated(int userID) {
+        String sql = "SELECT * FROM books INNER JOIN publisher ON books.MaNXB = publisher.MaNXB WHERE UserID = ?";
+        JSONArray booksArray = new JSONArray();
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                JSONObject book = new JSONObject();
+                book.put("MaSach", rs.getInt("MaSach"));
+                book.put("MaNXB", rs.getInt("MaNXB"));
+                book.put("UserID", rs.getInt("UserID"));
+                book.put("TenSach", rs.getString("TenSach"));
+                book.put("NamXuatBan", rs.getTimestamp("NamXuatBan").toString());
+                book.put("Gia", rs.getInt("Gia"));
+                book.put("MoTa", rs.getString("MoTa"));
+                book.put("TenNXB", rs.getString("TenNXB"));
+
+                booksArray.put(book);
+
+                return booksArray.toString(); // Trả về dạng JSON array
+
+            } else {
+                throw new RuntimeException("Không tìm thấy sách nào vui lòng tạo: " + userID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi truy xuất sách: " + e.getMessage());
+        }
+    }
+
+    public String getBookDetails(int maSach) {
+        String sql = "SELECT * FROM books INNER JOIN publisher ON books.MaNXB = publisher.MaNXB WHERE MaSach = ?";
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maSach);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                JSONObject book = new JSONObject();
+                book.put("MaSach", rs.getInt("MaSach"));
+                book.put("MaNXB", rs.getInt("MaNXB"));
+                book.put("UserID", rs.getInt("UserID"));
+                book.put("TenSach", rs.getString("TenSach"));
+                book.put("NamXuatBan", rs.getTimestamp("NamXuatBan").toString());
+                book.put("Gia", rs.getInt("Gia"));
+                book.put("MoTa", rs.getString("MoTa"));
+                book.put("TenNXB", rs.getString("TenNXB"));
+
+                return book.toString();
+            } else {
+                throw new RuntimeException("Không tìm thấy sách với mã: " + maSach);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi truy xuất thông tin của một sách: " + e.getMessage());
+        }
     }
 }
