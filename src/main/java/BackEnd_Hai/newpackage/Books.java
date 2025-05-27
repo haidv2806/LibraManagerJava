@@ -129,4 +129,35 @@ public class Books {
             throw new RuntimeException("Lỗi khi truy xuất thông tin của một sách: " + e.getMessage());
         }
     }
+
+    public String editBook(int maSach, String tenSach, int gia, String moTa, int maNXB) {
+        String sql = "UPDATE books SET TenSach = ?, Gia = ?, MoTa = ?, MaNXB = ? WHERE MaSach = ? RETURNING *";
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, tenSach);
+            stmt.setInt(2, gia);
+            stmt.setString(3, moTa);
+            stmt.setInt(4, maNXB);
+            stmt.setInt(5, maSach);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                JSONObject book = new JSONObject();
+                book.put("MaSach", rs.getInt("MaSach"));
+                book.put("TenSach", rs.getString("TenSach"));
+                book.put("Gia", rs.getInt("Gia"));
+                book.put("MoTa", rs.getString("MoTa"));
+                book.put("MaNXB", rs.getInt("MaNXB"));
+                return book.toString();
+            } else {
+                throw new RuntimeException("Không tìm thấy sách với mã: " + maSach);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi cập nhật thông tin của một sách: " + e.getMessage());
+        }
+    }
 }
