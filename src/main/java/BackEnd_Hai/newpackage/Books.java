@@ -160,4 +160,23 @@ public class Books {
             throw new RuntimeException("Lỗi khi cập nhật thông tin của một sách: " + e.getMessage());
         }
     }
+
+    public String deleteBook(int maSach) {
+        String sql = "DELETE FROM books WHERE MaSach = ? RETURNING *";
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maSach);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return "Đã xóa sách với mã: " + maSach;
+            } else {
+                throw new RuntimeException("Không tìm thấy sách với mã: " + maSach);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi cập nhật thông tin của một sách: " + e.getMessage());
+        }
+    }
 }

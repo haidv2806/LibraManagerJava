@@ -16,8 +16,11 @@ public class Main {
             // String result3 = books.getBookDetails(1);
             // System.out.println("thông tin chi tiết sách: " + result3);
 
-            String result4 = books.editBook(1, "Sách sau khi sửa", 150000, "Mô tả sách sau khi sửa", 1);
-            System.out.println("kết quả sau khi cập nhậtnhật: " + result4);
+            // String result4 = books.editBook(1, "Sách sau khi sửa", 150000, "Mô tả sách sau khi sửa", 1);
+            // System.out.println("kết quả sau khi cập nhậtnhật: " + result4);
+
+            String result5 = books.deleteBook(1);
+            System.out.println("Kết quả xóa sách: " + result5);
         } catch (RuntimeException e) {
             e.printStackTrace();
             System.out.println("An error occurred: " + e.getMessage());
@@ -27,10 +30,10 @@ public class Main {
 // chcp 65001
 // thêm sách {xong}
 // xem danh sách sách {xong}
-// xem chi tiết sách {xong}
+// xem chi tiết sách {xong} 
 // sửa thông tin sách {xong}
-// xóa sách
-// tìm kiếm sách {xongxong}
+// xóa sách {xong}
+// tìm kiếm sách {xong} {Dung}
 // thêm volume vào sách
 // xem danh sách volume của sách
 // xem nội dung của volume
