@@ -7,46 +7,55 @@ package BackEnd_Hai.newpackage;
 // );
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import org.json.JSONObject;
 
 public class Publisher {
-    int MaNXB;
-    String TenNXB;
-    String DiaChi;
 
-    public String addPublisher(int maNXB, String tenNXB, String diaChi) {
-        this.MaNXB = maNXB;
-        this.TenNXB = tenNXB;
-        this.DiaChi = diaChi;
-
-        String sql = "INSERT INTO publisher (MaNXB, TenNXB, DiaChi) VALUES (?, ?, ?)";
+    public String addPublisher(String tenNXB, String diaChi) {
+        String sql = "INSERT INTO publisher (TenNXB, DiaChi) VALUES (?, ?) RETURNING *";
 
         try (Connection conn = Database.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, MaNXB);
-            stmt.setString(2, TenNXB);
-            stmt.setString(3, DiaChi);
-            stmt.executeUpdate();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            return "Thêm nhà xuất bản thành công";
+            stmt.setString(1, tenNXB);
+            stmt.setString(2, diaChi);
+            
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                JSONObject json = new JSONObject();
+                json.put("MaNXB", rs.getInt("MaNXB"));
+                json.put("TenNXB", rs.getString("TenNXB"));
+                json.put("DiaChi", rs.getString("DiaChi"));
+
+                return json.toString(); // Trả về chuỗi JSON
+            } else {
+                throw new RuntimeException("Không thể thêm nhà xuất bản");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Lỗi khi thêm nhà xuất bản: " + e.getMessage());
         }
     }
 
     public int getMaNXB(String tenNXB) {
-        String sql = "SELECT * FROM publisher WHERE TenNXB = ?";
-
+        String sql = "SELECT MaNXB FROM publisher WHERE TenNXB = ?";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, tenNXB);
-            return stmt.executeQuery().getInt("MaNXB");
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("MaNXB");
+            } else {
+                return -1; // Not found
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            throw new RuntimeException("Lỗi khi lấy mã nhà xuất bản: " + e.getMessage());
         }
     }
+
 }

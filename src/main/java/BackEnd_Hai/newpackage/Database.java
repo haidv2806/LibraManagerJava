@@ -1,27 +1,41 @@
 package BackEnd_Hai.newpackage;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
     private static final Dotenv dotenv = Dotenv.load();
 
-    private static final String URL = String.format(
-        "jdbc:postgresql://%s:%s/%s",
-        dotenv.get("PG_HOST"),
-        dotenv.get("PG_PORT"),
-        dotenv.get("PG_DATABASE")
-    );
-    private static final String USER = dotenv.get("PG_USER");
-    private static final String PASSWORD = dotenv.get("PG_PASSWORD");
+    private static final HikariConfig config = new HikariConfig();
+    private static final HikariDataSource dataSource;
+
+    static {
+        config.setJdbcUrl(String.format(
+            "jdbc:postgresql://%s:%s/%s",
+            dotenv.get("PG_HOST"),
+            dotenv.get("PG_PORT"),
+            dotenv.get("PG_DATABASE")
+        ));
+        config.setUsername(dotenv.get("PG_USER"));
+        config.setPassword(dotenv.get("PG_PASSWORD"));
+        config.setMaximumPoolSize(10); // số kết nối tối đa
+        config.setMinimumIdle(2);      // số kết nối rảnh tối thiểu
+        config.setIdleTimeout(30000);  // timeout cho idle connection (ms)
+        config.setMaxLifetime(600000); // thời gian sống của connection (ms)
+        config.setConnectionTimeout(30000); // timeout khi lấy connection (ms)
+
+        dataSource = new HikariDataSource(config);
+    }
 
     public static Connection getConnection() throws SQLException {
-        System.out.println("Connecting to database...");
-        System.out.println("URL: " + URL);
-        System.out.println("User: " + USER);
-        System.out.println("Password: " + PASSWORD);
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return dataSource.getConnection();
+    }
+
+    public static HikariDataSource getDataSource() {
+        return dataSource;
     }
 }
