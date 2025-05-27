@@ -40,13 +40,26 @@ public class UserFileManager {
         String line;
         while ((line = br.readLine()) != null) {
             if (line.trim().isEmpty()) continue;
-            String fullName = line.substring(0, 20).trim();
-            String dateOfBirth = line.substring(20, 40).trim();
-            String phone = line.substring(40, 52).trim();
-            String email = line.substring(52, 82).trim();
-            String address = line.substring(82, 132).trim();
-            String hashedPassword = line.substring(132).trim();
-            list.add(new User(fullName, dateOfBirth, phone, email, address, hashedPassword));
+
+            // Kiểm tra độ dài tối thiểu (132 ký tự)
+            if (line.length() < 132) {
+                System.err.println("Dòng dữ liệu không hợp lệ (quá ngắn): " + line);
+                continue;
+            }
+
+            try {
+                String fullName = line.substring(0, 20).trim();
+                String dateOfBirth = line.substring(20, 40).trim();
+                String phone = line.substring(40, 52).trim();
+                String email = line.substring(52, 82).trim();
+                String address = line.substring(82, 132).trim();
+                String hashedPassword = line.substring(132).trim();
+
+                list.add(new User(fullName, dateOfBirth, phone, email, address, hashedPassword));
+            } catch (StringIndexOutOfBoundsException e) {
+                System.err.println("Lỗi khi đọc dòng: " + line);
+                e.printStackTrace();
+            }
         }
 
         br.close();
