@@ -37,15 +37,20 @@ public class Books {
 
             ResultSet rs = stmt.executeQuery();
 
-            JSONObject json = new JSONObject();
-            json.put("MaSach", rs.getInt("MaSach"));
-            json.put("MaNXB", rs.getInt("MaNXB"));
-            json.put("UserID", rs.getInt("UserID"));
-            json.put("TenSach", rs.getString("TenSach"));
-            json.put("Gia", rs.getInt("Gia"));
-            json.put("MoTa", rs.getString("MoTa"));
+            if (rs.next()) {
+                JSONObject json = new JSONObject();
+                json.put("MaSach", rs.getInt("MaSach"));
+                json.put("MaNXB", rs.getInt("MaNXB"));
+                json.put("UserID", rs.getInt("UserID"));
+                json.put("TenSach", rs.getString("TenSach"));
+                json.put("Gia", rs.getInt("Gia"));
+                json.put("MoTa", rs.getString("MoTa"));
 
-            return json.toString();
+                return json.toString();
+
+            } else {
+                throw new RuntimeException("Không tao dduocwj sach: "+ TenSach);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();

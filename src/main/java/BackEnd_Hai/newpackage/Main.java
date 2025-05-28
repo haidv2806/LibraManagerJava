@@ -6,9 +6,11 @@ public class Main {
     public static void main(String[] args) {
         try {
             Books books = new Books();
-            // String result = books.BookMiddlewareAdd("Nhà xuất bản ABC", 1, "Sách của đỗ
-            // hải tạo", 100000, "Mô tả sách");
+            // String result = books.BookMiddlewareAdd("Nhà xuất bản ABC", 1, "Sách của đỗ hải tạo", 100000, "Mô tả sách");
             // System.out.println("Kết quả thêm sách: " + result);
+
+            String result1 = books.addBook(1, 1, "Sách của đỗ hải tạo", 100000, "Mô tả sách");
+            System.out.println("Kết quả thêm sách: " + result1);
 
             // String result2 = books.getAllBookCreated(1);
             // System.out.println("các sách đã tạo: " + result2);
@@ -19,8 +21,8 @@ public class Main {
             // String result4 = books.editBook(1, "Sách sau khi sửa", 150000, "Mô tả sách sau khi sửa", 1);
             // System.out.println("kết quả sau khi cập nhậtnhật: " + result4);
 
-            String result5 = books.deleteBook(1);
-            System.out.println("Kết quả xóa sách: " + result5);
+            // String result5 = books.deleteBook(1);
+            // System.out.println("Kết quả xóa sách: " + result5);
         } catch (RuntimeException e) {
             e.printStackTrace();
             System.out.println("An error occurred: " + e.getMessage());
