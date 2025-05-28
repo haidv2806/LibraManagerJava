@@ -4,11 +4,14 @@ package BackEnd_Hai.newpackage;
 //     MaSach SERIAL PRIMARY KEY,
 //     MaNXB INT,
 //     UserID INT,
+//     AuthorID INT,
 //     TenSach VARCHAR(50),
 //     NamXuatBan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 //     Gia INT,
 //     MoTa VARCHAR(1000),
-//     FOREIGN KEY (MaNXB) REFERENCES publisher(MaNXB)
+//     FOREIGN KEY (MaNXB) REFERENCES publisher(MaNXB),
+//     FOREIGN KEY (UserID) REFERENCES Users(UserID),
+//     FOREIGN KEY (AuthorID) REFERENCES author(MaTG)
 // );
 
 import java.sql.Connection;

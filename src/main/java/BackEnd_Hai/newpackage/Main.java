@@ -37,3 +37,23 @@ public class Main {
 // thêm volume vào sách
 // xem danh sách volume của sách
 // xem nội dung của volume
+
+// CREATE TABLE Volume(
+//     volume_id SERIAL PRIMARY KEY,
+//     MaSach INT,
+//     TenVolume VARCHAR(50),
+//     file_path TEXT,
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+//     FOREIGN KEY (MaSach) REFERENCES books(MaSach) ON DELETE CASCADE
+// )
+
+
+
+// CREATE TABLE Users(
+//     UserID SERIAL PRIMARY KEY,
+//     HoTen VARCHAR(20) UNIQUE NOT NULL,
+//     Password VARCHAR(255) NOT NULL,
+//     phone VARCHAR(20),
+//     Email VARCHAR(20),
+//     DiaChi VARCHAR(50)
+// )

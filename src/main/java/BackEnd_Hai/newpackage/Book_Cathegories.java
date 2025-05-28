@@ -5,7 +5,7 @@ package BackEnd_Hai.newpackage;
 //     MaSach INT,
 //     PRIMARY KEY (MaTL, MaSach),
 //     FOREIGN KEY (MaTL) REFERENCES Cathegory(MaTL) ON DELETE CASCADE,
-//     FOREIGN KEY (MaSach) REFERENCES Books(MaSach) ON DELETE CASCADE
+//     FOREIGN KEY (MaSach) REFERENCES books(MaSach) ON DELETE CASCADE
 // )
 
 import java.sql.Connection;

@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+// CREATE TABLE cathegory (
+//     MaTL SERIAL PRIMARY KEY,
+//     TenTL VARCHAR(50),
+//     MoTa VARCHAR(1000)
+// );
+
 public class Cathegory {
     // private int MaTL;
     // private String TenTL;
