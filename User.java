@@ -1,4 +1,4 @@
-ó bảopackage com.javateam.libramanagerjava;
+package com.javateam.libramanagerjava;
 
 public class User {
     private String fullName;

@@ -1,43 +1,54 @@
 package com.javateam.libramanagerjava;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Database {
-    // Gán trực tiếp thông tin kết nối
-    private static final String PG_HOST = "localhost";
-    private static final String PG_PORT = "5432";
-    private static final String PG_DATABASE = "DatabasecuaHan";
-    private static final String PG_USER = "postgres";
-    private static final String PG_PASSWORD = "vunghan@11";
-
     private static final HikariConfig config = new HikariConfig();
     private static final HikariDataSource dataSource;
 
     static {
-        config.setJdbcUrl(String.format(
-            "jdbc:postgresql://%s:%s/%s",
-            PG_HOST,
-            PG_PORT,
-            PG_DATABASE
-        ));
-        config.setUsername(PG_USER);
-        config.setPassword(PG_PASSWORD);
-        config.setMaximumPoolSize(10); // số kết nối tối đa
-        config.setMinimumIdle(2);      // số kết nối rảnh tối thiểu
-        config.setIdleTimeout(30000);  // timeout cho idle connection (ms)
-        config.setMaxLifetime(600000); // thời gian sống của connection (ms)
-        config.setConnectionTimeout(30000); // timeout khi lấy connection (ms)
-
-        dataSource = new HikariDataSource(config);
+        try {
+            Properties props = new Properties();
+            // Kiểm tra file application.properties
+            java.io.InputStream inStream = Database.class.getClassLoader().getResourceAsStream("application.properties");
+            if (inStream == null) {
+                // Dùng giá trị mặc định nếu file không tồn tại
+                props.setProperty("db.host", "localhost");
+                props.setProperty("db.port", "5432");
+                props.setProperty("db.database", "DatabasecuaHan");
+                props.setProperty("db.user", "postgres");
+                props.setProperty("db.password", "vunghan@11");
+            } else {
+                props.load(inStream);
+            }
+            config.setJdbcUrl(String.format(
+                "jdbc:postgresql://%s:%s/%s",
+                props.getProperty("db.host", "localhost"),
+                props.getProperty("db.port", "5432"),
+                props.getProperty("db.database", "DatabasecuaHan")
+            ));
+            config.setUsername(props.getProperty("db.user", "postgres"));
+            config.setPassword(props.getProperty("db.password", "vunghan@11"));
+            config.setMaximumPoolSize(10);
+            config.setMinimumIdle(2);
+            config.setIdleTimeout(30000);
+            config.setMaxLifetime(600000);
+            config.setConnectionTimeout(30000);
+            dataSource = new HikariDataSource(config);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize database: " + e.getMessage());
+        }
     }
 
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
-
+     
     public static HikariDataSource getDataSource() {
         return dataSource;
     }

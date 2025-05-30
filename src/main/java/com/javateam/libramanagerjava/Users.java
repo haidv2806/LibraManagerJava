@@ -2,32 +2,52 @@ package com.javateam.libramanagerjava;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Users {
-
-    public static void insertUser(String hoTen, String password, String phone, String email, String diaChi) {
-        String sql = "INSERT INTO Users (HoTen, Password, phone, Email, DiaChi) VALUES (?, ?, ?, ?, ?)";
-
+    public static void insertUser(String hoten, String ngaySinh, String phone, String email, String diachi, String password) {
+        String sql = "INSERT INTO users (hoten, ngaySinh, phone, email, diachi, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, hoTen);
-            stmt.setString(2, password);
-            stmt.setString(3, phone);
-            stmt.setString(4, email);
-            stmt.setString(5, diaChi);
-
-            int rowsInserted = stmt.executeUpdate();
-
-            if (rowsInserted > 0) {
-                System.out.println("✅ Thêm người dùng thành công.");
-            } else {
-                System.out.println("❌ Không thêm được người dùng.");
-            }
-
+            stmt.setString(1, hoten.length() > 20 ? hoten.substring(0, 20) : hoten);
+            stmt.setString(2, ngaySinh);
+            stmt.setString(3, phone.length() > 20 ? phone.substring(0, 20) : phone);
+            stmt.setString(4, email.length() > 20 ? email.substring(0, 20) : email);
+            stmt.setString(5, diachi.length() > 50 ? diachi.substring(0, 50) : diachi);
+            stmt.setString(6, BCrypt.hashpw(password, BCrypt.gensalt()));
+            stmt.executeUpdate();
+            System.out.println("Đăng ký thành công!");
         } catch (SQLException e) {
-            System.out.println("❌ Lỗi khi thêm người dùng: " + e.getMessage());
+            if (e.getSQLState().equals("23505")) { // UNIQUE constraint violation
+                System.out.println("Họ tên hoặc email đã tồn tại!");
+            } else {
+                System.out.println("Lỗi khi thêm người dùng: " + e.getMessage());
+            }
         }
+    }
+
+    public static User getUserByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new User(
+                    rs.getInt("userid"),
+                    rs.getString("hoten"),
+                    rs.getString("ngaySinh"),
+                    rs.getString("phone"),
+                    rs.getString("email"),
+                    rs.getString("diachi"),
+                    rs.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi tìm người dùng: " + e.getMessage());
+        }
+        return null;
     }
 }

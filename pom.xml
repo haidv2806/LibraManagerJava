@@ -7,15 +7,16 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>24</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>com.javateam.libramanagerjava.LibraManagerJava</exec.mainClass>
     </properties>
     <dependencies>
-    <dependency>
-        <groupId>org.mindrot</groupId>
+		  <dependency>
+            <groupId>org.mindrot</groupId>
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version>
-    </dependency>
+        </dependency>
+		
     <dependency>
             <groupId>io.github.cdimascio</groupId>
             <artifactId>java-dotenv</artifactId>
