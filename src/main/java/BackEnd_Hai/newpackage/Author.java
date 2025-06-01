@@ -10,20 +10,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.json.JSONObject;
 
 public class Author {
 
-    protected String addAuthor(int maTG, String tenTG, String soDT) {
-        String sql = "INSERT INTO author (MaTG, TenTG, SoDT) VALUES (?, ?, ?) RETURNING MaTG";
+    protected String addAuthor(String tenTG, String soDT) {
+        String sql = "INSERT INTO author (TenTG, SoDT) VALUES (?, ?) RETURNING *";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, maTG);
-            stmt.setString(2, tenTG);
-            stmt.setString(3, soDT);
-            stmt.executeUpdate();
+            stmt.setString(1, tenTG);
+            stmt.setString(2, soDT);
 
-            return stmt.executeQuery().getString("TenTG");
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                JSONObject json = new JSONObject();
+                json.put("MaNXB", rs.getInt("MaTG"));
+                json.put("TenNXB", rs.getString("TenTG"));
+                json.put("DiaChi", rs.getString("SoDT"));
+
+                return json.toString(); // Trả về chuỗi JSON
+            } else {
+                throw new RuntimeException("Không thể thêm tác giả: " + tenTG);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -49,20 +59,6 @@ public class Author {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
-        }
-    }
-
-    protected String getTenTG(int MaTG) {
-        String sql = "SELECT TenTG FROM author WHERE MaTG = ?";
-
-        try (
-                Connection conn = Database.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, MaTG);
-            return stmt.executeQuery().getString("TenTG");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
