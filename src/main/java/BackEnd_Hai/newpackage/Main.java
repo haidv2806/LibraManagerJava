@@ -6,8 +6,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             Books books = new Books();
-            String result = books.BookMiddlewareAdd("IPM", 1, "DoVanHai", "Sách mới", 100000, "Mô tả sách mới");
-            System.out.println("Kết quả thêm sách: " + result);
+            // String result = books.BookMiddlewareAdd("IPM", 1, "DoVanHai", "Sách mới", 100000, "Mô tả sách mới");
+            // System.out.println("Kết quả thêm sách: " + result);
 
             // String result2 = books.getAllBookCreated(1);
             // System.out.println("các sách đã tạo: " + result2);
@@ -20,6 +20,27 @@ public class Main {
 
             // String result5 = books.deleteBook(1);
             // System.out.println("Kết quả xóa sách: " + result5);
+
+                        // Thêm một volume mới cho sách có MaSach = 1
+            Volume volume = new Volume();
+            // String addResult = volume.addVolume(2, "Volume 2", "/path/to/volume1.pdf");
+            // System.out.println("Kết quả thêm volume: " + addResult);
+
+            // // Xem danh sách volume của sách có MaSach = 1
+            // String listResult = volume.getVolumesByBook(2);
+            // System.out.println("Danh sách volume của sách 1: " + listResult);
+
+            // // Xem nội dung của volume vừa thêm (giả sử volume_id = 1)
+            String contentResult = volume.getVolumeContent(2);
+            // System.out.println("Nội dung volume 1: " + contentResult);
+
+            // Sửa thông tin volume (giả sử volume_id = 1)
+            // String editResult = volume.editVolume(2, "Volume 1 đã sửa", "/path/to/volume1_edited.pdf");
+            // System.out.println("Kết quả sửa volume: " + editResult);
+
+            // // Xóa volume (giả sử volume_id = 1)
+            String deleteResult = volume.deleteVolume(2);
+            System.out.println("Kết quả xóa volume: " + deleteResult);
         } catch (RuntimeException e) {
             e.printStackTrace();
             System.out.println("An error occurred: " + e.getMessage());
@@ -36,6 +57,8 @@ public class Main {
 // thêm volume vào sách
 // xem danh sách volume của sách
 // xem nội dung của volume
+// sửa thông tin volume
+// xóa volume
 
 // CREATE TABLE Volume(
 //     volume_id SERIAL PRIMARY KEY,
