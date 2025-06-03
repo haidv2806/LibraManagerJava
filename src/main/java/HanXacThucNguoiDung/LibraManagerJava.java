@@ -1,4 +1,4 @@
-package com.javateam.HanXacThucNguoiDung;
+package HanXacThucNguoiDung;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package com.javateam.HanXacThucNguoiDung;
+package HanXacThucNguoiDung;
 
 public class User {
     private int userid;

@@ -1,4 +1,4 @@
-package com.javateam.HanXacThucNguoiDung;
+package HanXacThucNguoiDung;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

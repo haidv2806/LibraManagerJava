@@ -1,4 +1,4 @@
-package com.javateam.HanXacThucNguoiDung;
+package HanXacThucNguoiDung;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
