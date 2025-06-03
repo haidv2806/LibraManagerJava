@@ -58,6 +58,7 @@ ResultSet rs;
         jSeparator2 = new javax.swing.JSeparator();
         btnDKy = new javax.swing.JButton();
         btnCancel2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +88,13 @@ ResultSet rs;
         btnCancel2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancel2ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Đăng nhập");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -130,11 +138,13 @@ ResultSet rs;
                                             .addComponent(txtPass)
                                             .addComponent(txtAdress)))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(77, 77, 77)
+                                .addGap(37, 37, 37)
                                 .addComponent(btnDKy)
-                                .addGap(48, 48, 48)
-                                .addComponent(btnCancel2)))
-                        .addGap(0, 43, Short.MAX_VALUE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)))
+                        .addGap(0, 22, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(126, 126, 126)
@@ -177,7 +187,8 @@ ResultSet rs;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDKy)
-                    .addComponent(btnCancel2))
+                    .addComponent(btnCancel2)
+                    .addComponent(jButton1))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -255,6 +266,13 @@ private String maXacNhan = null;
          System.exit(0);
     }//GEN-LAST:event_btnCancel2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        LoginForm dangkyForm = new LoginForm();
+        dangkyForm.setVisible(true);
+        this.dispose(); // Đóng form đăng nhập
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -286,6 +304,7 @@ private String maXacNhan = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel2;
     private javax.swing.JButton btnDKy;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
