@@ -1,4 +1,4 @@
-package com.javateam.libramanagerjava;
+package com.javateam.HanXacThucNguoiDung;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

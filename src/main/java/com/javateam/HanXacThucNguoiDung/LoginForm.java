@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.javateam.libramanagerjava;
+package com.javateam.HanXacThucNguoiDung;
 
 import javax.swing.JOptionPane;
 
@@ -74,6 +74,8 @@ public class LoginForm extends javax.swing.JFrame {
                 btnCancelActionPerformed(evt);
             }
         });
+        
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

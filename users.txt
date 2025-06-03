@@ -1,3 +1,0 @@
-FullName             DateOfBirth          Phone        Email                          Address                                            HashedPassword                                              
--------------------------------------------------------------------------------------------
-vu ngoc han          2005-10-29           0876413764   ngoctrangpham1811@gmail.com    thai binh                                          $2a$10$eack4m1a.lIoYHTxV3Ia/eZfWWLav6oqdbTKFiQWmJCRDT8SCW16W
