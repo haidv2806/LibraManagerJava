@@ -1,4 +1,4 @@
-package BackEnd_Hai.newpackage;
+package BackEnd_Hai;
 
 // CREATE TABLE Volume(
 //     MaTap SERIAL PRIMARY KEY,

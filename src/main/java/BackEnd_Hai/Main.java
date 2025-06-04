@@ -1,4 +1,4 @@
-package BackEnd_Hai.newpackage;
+package BackEnd_Hai;
 
 import java.sql.SQLException;
 
@@ -9,8 +9,8 @@ public class Main {
             // String result = books.BookMiddlewareAdd("IPM", 1, "DoVanHai", "Sách mới", 100000, "Mô tả sách mới");
             // System.out.println("Kết quả thêm sách: " + result);
 
-            // String result2 = books.getAllBookCreated(1);
-            // System.out.println("các sách đã tạo: " + result2);
+            String result2 = books.getAllBookCreated(1);
+            System.out.println("các sách đã tạo: " + result2);
 
             // String result3 = books.getBookDetails(2);
             // System.out.println("thông tin chi tiết sách: " + result3);

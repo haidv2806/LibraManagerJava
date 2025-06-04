@@ -1,4 +1,4 @@
-package BackEnd_Hai.newpackage;
+package BackEnd_Hai;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import com.zaxxer.hikari.HikariConfig;

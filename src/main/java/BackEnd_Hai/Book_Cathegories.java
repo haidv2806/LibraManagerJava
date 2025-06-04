@@ -1,4 +1,4 @@
-package BackEnd_Hai.newpackage;
+package BackEnd_Hai;
 
 // CREATE TABLE theloai_sach(
 //     MaTL INT,

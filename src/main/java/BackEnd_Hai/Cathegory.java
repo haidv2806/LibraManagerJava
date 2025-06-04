@@ -1,4 +1,4 @@
-package BackEnd_Hai.newpackage;
+package BackEnd_Hai;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

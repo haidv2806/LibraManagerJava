@@ -1,4 +1,4 @@
-package BackEnd_Hai.newpackage;
+package BackEnd_Hai;
 
 // CREATE TABLE nha_xuat_ban (
 //     MaNXB SERIAL PRIMARY KEY,
