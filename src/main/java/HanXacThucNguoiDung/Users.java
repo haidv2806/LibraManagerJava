@@ -20,7 +20,8 @@ import org.mindrot.jbcrypt.BCrypt;
 // );
 
 public class Users {
-    public static void insertUser(String hoten, String ngaySinh, String phone, String email, String diachi, String password) {
+    
+    public static void insertUser(String hoten, String ngaySinh, String phone, String email, String diachi, String password) throws SQLException{
         String sql = "INSERT INTO users (hoten, ngaySinh, phone, email, diachi, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -35,8 +36,10 @@ public class Users {
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) { // UNIQUE constraint violation
                 System.out.println("Họ tên hoặc email đã tồn tại!");
+                throw new SQLException("Họ tên hoặc email đã tồn tại", e);
             } else {
                 System.out.println("Lỗi khi thêm người dùng: " + e.getMessage());
+                throw new SQLException("Họ tên hoặc email đã tồn tại", e);
             }
         }
     }
