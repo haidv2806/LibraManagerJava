@@ -10,22 +10,21 @@ package BackEnd_Hai.newpackage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Book_Cathegories {
-    private int MaTL;
-    private int MaSach;
 
     public String addBookCathegory(int maTL, int maSach) {
-        this.MaTL = maTL;
-        this.MaSach = maSach;
-
         String sql = "INSERT INTO theloai_sach (MaTL, MaSach) VALUES (?, ?)";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, MaTL);
-            stmt.setInt(2, MaSach);
+            stmt.setInt(1, maTL);
+            stmt.setInt(2, maSach);
             stmt.executeUpdate();
 
             return "Thêm thể loại sách thành công";
@@ -33,5 +32,27 @@ public class Book_Cathegories {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public JSONArray getCategoriesByBookId(int maSach) {
+        JSONArray dsTheLoai = new JSONArray();
+        try (Connection conn = Database.getConnection()) {
+            String sql = "SELECT the_loai.MaTL, the_loai.TenTL FROM theloai_sach " +
+                    "INNER JOIN the_loai ON theloai_sach.MaTL = the_loai.MaTL " +
+                    "WHERE theloai_sach.MaSach = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, maSach);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                JSONObject theLoai = new JSONObject();
+                theLoai.put("MaTL", rs.getInt("MaTL"));
+                theLoai.put("TenTL", rs.getString("TenTL"));
+                dsTheLoai.put(theLoai);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dsTheLoai;
     }
 }

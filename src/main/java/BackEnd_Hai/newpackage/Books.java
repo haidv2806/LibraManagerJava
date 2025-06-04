@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ public class Books {
     }
 
     // Middleware thêm sách (tự động thêm NXB và tác giả nếu chưa có)
-    public String BookMiddlewareAdd(String tenNXB, int maND, String tenTacGia, String tenSach, int gia, String moTa) {
+    public String BookMiddlewareAdd(String tenNXB, int maND, String tenTacGia, String tenSach, int gia, String moTa, List<Integer> maTLList) {
         Publisher publisher = new Publisher();
         int MaNXB = publisher.getMaNXB(tenNXB);
 
@@ -83,6 +84,12 @@ public class Books {
 
         // Thêm sách với MaNXB và MaTG đã xác định
         String result = addBook(MaNXB, maND, MaTG, tenSach, gia, moTa);
+        int MaSach = new JSONObject(result).getInt("MaSach");
+        
+        Book_Cathegories bCat = new Book_Cathegories();
+        for (int maTL : maTLList) {
+            bCat.addBookCathegory(maTL, MaSach);
+        }
 
         return result;
     }
@@ -90,10 +97,10 @@ public class Books {
     // Lấy tất cả sách đã tạo bởi một user
     public String getAllBookCreated(int maND) {
         String sql = "SELECT sach.*, nha_xuat_ban.TenNXB, tac_gia.TenTG " +
-                     "FROM sach " +
-                     "INNER JOIN nha_xuat_ban ON sach.MaNXB = nha_xuat_ban.MaNXB " +
-                     "INNER JOIN tac_gia ON sach.MaTG = tac_gia.MaTG " +
-                     "WHERE sach.MaND = ?";
+                "FROM sach " +
+                "INNER JOIN nha_xuat_ban ON sach.MaNXB = nha_xuat_ban.MaNXB " +
+                "INNER JOIN tac_gia ON sach.MaTG = tac_gia.MaTG " +
+                "WHERE sach.MaND = ?";
         JSONArray booksArray = new JSONArray();
 
         try (
@@ -102,6 +109,7 @@ public class Books {
             stmt.setInt(1, maND);
             ResultSet rs = stmt.executeQuery();
 
+            Book_Cathegories book_cathegories = new Book_Cathegories();
             while (rs.next()) {
                 JSONObject book = new JSONObject();
                 book.put("MaSach", rs.getInt("MaSach"));
@@ -114,7 +122,7 @@ public class Books {
                 book.put("MoTa", rs.getString("MoTa"));
                 book.put("TenNXB", rs.getString("TenNXB"));
                 book.put("TenTacGia", rs.getString("TenTG"));
-
+                book.put("TheLoai", book_cathegories.getCategoriesByBookId(book.getInt("MaSach")));
                 booksArray.put(book);
             }
 
@@ -133,16 +141,17 @@ public class Books {
     // Lấy chi tiết một sách
     public String getBookDetails(int maSach) {
         String sql = "SELECT sach.*, nha_xuat_ban.TenNXB, tac_gia.TenTG " +
-                     "FROM sach " +
-                     "INNER JOIN nha_xuat_ban ON sach.MaNXB = nha_xuat_ban.MaNXB " +
-                     "INNER JOIN tac_gia ON sach.MaTG = tac_gia.MaTG " +
-                     "WHERE sach.MaSach = ?";
+                "FROM sach " +
+                "INNER JOIN nha_xuat_ban ON sach.MaNXB = nha_xuat_ban.MaNXB " +
+                "INNER JOIN tac_gia ON sach.MaTG = tac_gia.MaTG " +
+                "WHERE sach.MaSach = ?";
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, maSach);
             ResultSet rs = stmt.executeQuery();
 
+            Book_Cathegories book_cathegories = new Book_Cathegories();
             if (rs.next()) {
                 JSONObject book = new JSONObject();
                 book.put("MaSach", rs.getInt("MaSach"));
@@ -155,7 +164,7 @@ public class Books {
                 book.put("MoTa", rs.getString("MoTa"));
                 book.put("TenNXB", rs.getString("TenNXB"));
                 book.put("TenTacGia", rs.getString("TenTG"));
-
+                book.put("TheLoai", book_cathegories.getCategoriesByBookId(book.getInt("MaSach")));
                 return book.toString();
             } else {
                 throw new RuntimeException("Không tìm thấy sách với mã: " + maSach);

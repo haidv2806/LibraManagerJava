@@ -1,19 +1,29 @@
 package BackEnd_Hai.newpackage;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
         try {
             Books books = new Books();
-            // String result = books.BookMiddlewareAdd("IPM", 1, "DoVanHai", "Sách mới", 100000, "Mô tả sách mới");
-            // System.out.println("Kết quả thêm sách: " + result);
+            // Thêm sách mới
+            // String result = books.BookMiddlewareAdd(
+            //     "NXB IPM",          // tên nhà xuất bản
+            //     1,                 // mã người dùng (giả định đã có)
+            //     "Đỗ Văn Hải",       // tên tác giả
+            //     "Sách mới về Java", // tên sách
+            //     100000,             // giá
+            //     "Mô tả sách học Java từ cơ bản đến nâng cao",  // mô tả
+            //     Arrays.asList(1, 2) // danh sách mã thể loại (giả định MaTL = 1,2 đã có)
+            // );
+            // System.out.println("✅ Kết quả thêm sách: \n" + result);
 
             // String result2 = books.getAllBookCreated(1);
-            // System.out.println("các sách đã tạo: " + result2);
+            // System.out.println("📚 Các sách đã tạo: \n" + result2);
 
-            // String result3 = books.getBookDetails(2);
-            // System.out.println("thông tin chi tiết sách: " + result3);
+            String result3 = books.getBookDetails(5);
+            System.out.println("🔍 Thông tin chi tiết sách: \n" + result3);
 
             // String result4 = books.editBook(2, "Sách sau khi sửa", 150000, "Mô tả sách sau khi sửa", 1);
             // System.out.println("kết quả sau khi cập nhậtnhật: " + result4);
