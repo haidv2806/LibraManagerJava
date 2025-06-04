@@ -194,6 +194,8 @@ public class LoginForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, sb.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        // so sánh email và password của Hân ?????? cái con cặc gì vậy m dùng cái này để làm gì
         if (e.equals("fpt") && p.equals("polytechnic")) {
             JOptionPane.showMessageDialog(this, "Login successfully! ");
             return;

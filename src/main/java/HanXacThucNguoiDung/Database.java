@@ -20,9 +20,9 @@ public class Database {
                 // Dùng giá trị mặc định nếu file không tồn tại
                 props.setProperty("db.host", "localhost");
                 props.setProperty("db.port", "5432");
-                props.setProperty("db.database", "DatabasecuaHan");
+                props.setProperty("db.database", "java");
                 props.setProperty("db.user", "postgres");
-                props.setProperty("db.password", "vunghan@11");
+                props.setProperty("db.password", "Haidv2806");
             } else {
                 props.load(inStream);
             }
@@ -30,10 +30,10 @@ public class Database {
                 "jdbc:postgresql://%s:%s/%s",
                 props.getProperty("db.host", "localhost"),
                 props.getProperty("db.port", "5432"),
-                props.getProperty("db.database", "DatabasecuaHan")
+                props.getProperty("db.database", "java")
             ));
             config.setUsername(props.getProperty("db.user", "postgres"));
-            config.setPassword(props.getProperty("db.password", "vunghan@11"));
+            config.setPassword(props.getProperty("db.password", "Haidv2806"));
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
             config.setIdleTimeout(30000);

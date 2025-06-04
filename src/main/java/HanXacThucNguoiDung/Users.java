@@ -4,7 +4,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
+
 import org.mindrot.jbcrypt.BCrypt;
+
+// CREATE TABLE IF NOT EXISTS users (
+//     userid SERIAL PRIMARY KEY,
+//     hoten VARCHAR(20) NOT NULL,
+//     ngaySinh VARCHAR(10) NOT NULL,
+//     phone VARCHAR(20) NOT NULL,
+//     email VARCHAR(20) NOT NULL UNIQUE,
+//     diachi VARCHAR(50) NOT NULL,
+//     password VARCHAR(60) NOT NULL
+// );
 
 public class Users {
     public static void insertUser(String hoten, String ngaySinh, String phone, String email, String diachi, String password) {
