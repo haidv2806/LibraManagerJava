@@ -1,17 +1,17 @@
 package BackEnd_Hai.newpackage;
 
-// CREATE TABLE books (
+// CREATE TABLE sach (
 //     MaSach SERIAL PRIMARY KEY,
 //     MaNXB INT,
-//     UserID INT,
-//     AuthorID INT,
+//     MaND INT,
+//     MaTG INT,
 //     TenSach VARCHAR(50),
-//     NamXuatBan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+//     thoiGianTao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 //     Gia INT,
 //     MoTa VARCHAR(1000),
-//     FOREIGN KEY (MaNXB) REFERENCES publisher(MaNXB),
-//     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-//     FOREIGN KEY (AuthorID) REFERENCES author(MaTG)
+//     FOREIGN KEY (MaNXB) REFERENCES nha_xuat_ban(MaNXB),
+//     FOREIGN KEY (MaND) REFERENCES nguoi_dung(MaND),
+//     FOREIGN KEY (MaTG) REFERENCES tac_gia(MaTG)
 // );
 
 import java.sql.Connection;
@@ -24,14 +24,15 @@ import org.json.JSONObject;
 
 public class Books {
 
-    public String addBook(int MaNXB, int UserID, int AuthorID, String TenSach, int Gia, String MoTa) {
-        String sql = "INSERT INTO books (MaNXB, UserID, AuthorID, TenSach, Gia, MoTa) VALUES (?, ?, ?, ?, ?, ?) RETURNING *";
+    // Thêm sách mới
+    public String addBook(int MaNXB, int MaND, int MaTG, String TenSach, int Gia, String MoTa) {
+        String sql = "INSERT INTO sach (MaNXB, MaND, MaTG, TenSach, Gia, MoTa) VALUES (?, ?, ?, ?, ?, ?) RETURNING *";
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, MaNXB);
-            stmt.setInt(2, UserID);
-            stmt.setInt(3, AuthorID);
+            stmt.setInt(2, MaND);
+            stmt.setInt(3, MaTG);
             stmt.setString(4, TenSach);
             stmt.setInt(5, Gia);
             stmt.setString(6, MoTa);
@@ -42,14 +43,13 @@ public class Books {
                 JSONObject json = new JSONObject();
                 json.put("MaSach", rs.getInt("MaSach"));
                 json.put("MaNXB", rs.getInt("MaNXB"));
-                json.put("UserID", rs.getInt("UserID"));
-                json.put("AuthorID", rs.getInt("AuthorID"));
+                json.put("MaND", rs.getInt("MaND"));
+                json.put("MaTG", rs.getInt("MaTG"));
                 json.put("TenSach", rs.getString("TenSach"));
                 json.put("Gia", rs.getInt("Gia"));
                 json.put("MoTa", rs.getString("MoTa"));
-
+                json.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
                 return json.toString();
-
             } else {
                 throw new RuntimeException("Không tạo được sách: " + TenSach);
             }
@@ -60,7 +60,8 @@ public class Books {
         }
     }
 
-    public String BookMiddlewareAdd(String tenNXB, int userID, String tenTacGia,String tenSach, int gia, String moTa) {
+    // Middleware thêm sách (tự động thêm NXB và tác giả nếu chưa có)
+    public String BookMiddlewareAdd(String tenNXB, int maND, String tenTacGia, String tenSach, int gia, String moTa) {
         Publisher publisher = new Publisher();
         int MaNXB = publisher.getMaNXB(tenNXB);
 
@@ -80,50 +81,62 @@ public class Books {
             MaTG = json.getInt("MaTG");
         }
 
-        // Thêm sách với MaNXB đã xác định
-        String result = addBook(MaNXB, userID, MaTG, tenSach, gia, moTa);
+        // Thêm sách với MaNXB và MaTG đã xác định
+        String result = addBook(MaNXB, maND, MaTG, tenSach, gia, moTa);
 
         return result;
     }
 
-    public String getAllBookCreated(int userID) {
-        String sql = "SELECT * FROM books INNER JOIN publisher ON books.MaNXB = publisher.MaNXB INNER JOIN author ON books.MaTG = author.MaTG WHERE UserID = ?";
+    // Lấy tất cả sách đã tạo bởi một user
+    public String getAllBookCreated(int maND) {
+        String sql = "SELECT sach.*, nha_xuat_ban.TenNXB, tac_gia.TenTG " +
+                     "FROM sach " +
+                     "INNER JOIN nha_xuat_ban ON sach.MaNXB = nha_xuat_ban.MaNXB " +
+                     "INNER JOIN tac_gia ON sach.MaTG = tac_gia.MaTG " +
+                     "WHERE sach.MaND = ?";
         JSONArray booksArray = new JSONArray();
 
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userID);
+            stmt.setInt(1, maND);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 JSONObject book = new JSONObject();
                 book.put("MaSach", rs.getInt("MaSach"));
                 book.put("MaNXB", rs.getInt("MaNXB"));
-                book.put("UserID", rs.getInt("UserID"));
-                book.put("AuthorID", rs.getInt("AuthorID"));
+                book.put("MaND", rs.getInt("MaND"));
+                book.put("MaTG", rs.getInt("MaTG"));
                 book.put("TenSach", rs.getString("TenSach"));
-                book.put("NamXuatBan", rs.getTimestamp("NamXuatBan").toString());
+                book.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
                 book.put("Gia", rs.getInt("Gia"));
                 book.put("MoTa", rs.getString("MoTa"));
                 book.put("TenNXB", rs.getString("TenNXB"));
                 book.put("TenTacGia", rs.getString("TenTG"));
 
                 booksArray.put(book);
-
-                return booksArray.toString(); // Trả về dạng JSON array
-
-            } else {
-                throw new RuntimeException("Không tìm thấy sách nào vui lòng tạo: " + userID);
             }
+
+            if (booksArray.length() == 0) {
+                throw new RuntimeException("Không tìm thấy sách nào, vui lòng tạo: " + maND);
+            }
+
+            return booksArray.toString(); // Trả về dạng JSON array
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi truy xuất sách: " + e.getMessage());
         }
     }
 
+    // Lấy chi tiết một sách
     public String getBookDetails(int maSach) {
-        String sql = "SELECT * FROM books INNER JOIN publisher ON books.MaNXB = publisher.MaNXB INNER JOIN author ON books.MaTG = author.MaTG WHERE MaSach = ?";
+        String sql = "SELECT sach.*, nha_xuat_ban.TenNXB, tac_gia.TenTG " +
+                     "FROM sach " +
+                     "INNER JOIN nha_xuat_ban ON sach.MaNXB = nha_xuat_ban.MaNXB " +
+                     "INNER JOIN tac_gia ON sach.MaTG = tac_gia.MaTG " +
+                     "WHERE sach.MaSach = ?";
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -134,10 +147,10 @@ public class Books {
                 JSONObject book = new JSONObject();
                 book.put("MaSach", rs.getInt("MaSach"));
                 book.put("MaNXB", rs.getInt("MaNXB"));
-                book.put("UserID", rs.getInt("UserID"));
-                book.put("AuthorID", rs.getInt("AuthorID"));
+                book.put("MaND", rs.getInt("MaND"));
+                book.put("MaTG", rs.getInt("MaTG"));
                 book.put("TenSach", rs.getString("TenSach"));
-                book.put("NamXuatBan", rs.getTimestamp("NamXuatBan").toString());
+                book.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
                 book.put("Gia", rs.getInt("Gia"));
                 book.put("MoTa", rs.getString("MoTa"));
                 book.put("TenNXB", rs.getString("TenNXB"));
@@ -153,8 +166,9 @@ public class Books {
         }
     }
 
+    // Sửa thông tin sách
     public String editBook(int maSach, String tenSach, int gia, String moTa, int maNXB) {
-        String sql = "UPDATE books SET TenSach = ?, Gia = ?, MoTa = ?, MaNXB = ? WHERE MaSach = ? RETURNING *";
+        String sql = "UPDATE sach SET TenSach = ?, Gia = ?, MoTa = ?, MaNXB = ? WHERE MaSach = ? RETURNING *";
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -184,8 +198,9 @@ public class Books {
         }
     }
 
+    // Xóa sách
     public String deleteBook(int maSach) {
-        String sql = "DELETE FROM books WHERE MaSach = ? RETURNING *";
+        String sql = "DELETE FROM sach WHERE MaSach = ? RETURNING *";
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -199,7 +214,7 @@ public class Books {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Lỗi khi cập nhật thông tin của một sách: " + e.getMessage());
+            throw new RuntimeException("Lỗi khi xóa sách: " + e.getMessage());
         }
     }
 }

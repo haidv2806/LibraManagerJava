@@ -1,11 +1,11 @@
 package BackEnd_Hai.newpackage;
 
-// CREATE TABLE book_cathegories(
+// CREATE TABLE theloai_sach(
 //     MaTL INT,
 //     MaSach INT,
 //     PRIMARY KEY (MaTL, MaSach),
-//     FOREIGN KEY (MaTL) REFERENCES Cathegory(MaTL) ON DELETE CASCADE,
-//     FOREIGN KEY (MaSach) REFERENCES books(MaSach) ON DELETE CASCADE
+//     FOREIGN KEY (MaTL) REFERENCES the_loai(MaTL) ON DELETE CASCADE,
+//     FOREIGN KEY (MaSach) REFERENCES sach(MaSach) ON DELETE CASCADE
 // )
 
 import java.sql.Connection;
@@ -20,7 +20,7 @@ public class Book_Cathegories {
         this.MaTL = maTL;
         this.MaSach = maSach;
 
-        String sql = "INSERT INTO book_cathegories (MaTL, MaSach) VALUES (?, ?)";
+        String sql = "INSERT INTO theloai_sach (MaTL, MaSach) VALUES (?, ?)";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {

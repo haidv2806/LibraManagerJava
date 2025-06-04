@@ -1,6 +1,6 @@
 package BackEnd_Hai.newpackage;
 
-// CREATE TABLE author (
+// CREATE TABLE tac_gia (
 //     MaTG SERIAL PRIMARY KEY,
 //     TenTG VARCHAR(50),
 //     SoDT VARCHAR(20)
@@ -15,7 +15,7 @@ import org.json.JSONObject;
 public class Author {
 
     protected String addAuthor(String tenTG, String soDT) {
-        String sql = "INSERT INTO author (TenTG, SoDT) VALUES (?, ?) RETURNING *";
+        String sql = "INSERT INTO tac_gia (TenTG, SoDT) VALUES (?, ?) RETURNING *";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -25,7 +25,7 @@ public class Author {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 JSONObject json = new JSONObject();
-                json.put("MaNXB", rs.getInt("MaTG"));
+                json.put("MaTG", rs.getInt("MaTG"));
                 json.put("TenNXB", rs.getString("TenTG"));
                 json.put("DiaChi", rs.getString("SoDT"));
 
@@ -41,7 +41,7 @@ public class Author {
     }
 
     protected int getMaTG(String tenTG) {
-        String sql = "SELECT * FROM author WHERE TenTG = ?";
+        String sql = "SELECT * FROM tac_gia WHERE TenTG = ?";
 
         try (
                 Connection conn = Database.getConnection();
