@@ -176,7 +176,7 @@ public class Books {
     }
 
     // Sửa thông tin sách
-    public String editBook(int maSach, String tenSach, int gia, String moTa, int maNXB) {
+    public String editBook(int maSach, String tenSach, int gia, String moTa, int maNXB, List<Integer> maTLList) {
         String sql = "UPDATE sach SET TenSach = ?, Gia = ?, MoTa = ?, MaNXB = ? WHERE MaSach = ? RETURNING *";
         try (
                 Connection conn = Database.getConnection();
@@ -188,6 +188,11 @@ public class Books {
             stmt.setInt(5, maSach);
 
             ResultSet rs = stmt.executeQuery();
+            Book_Cathegories book_cathegories = new Book_Cathegories();
+            book_cathegories.deleteBookCathegory(maSach);
+            for (int maTL : maTLList) {
+                book_cathegories.addBookCathegory(maTL, maSach);
+            }
 
             if (rs.next()) {
                 JSONObject book = new JSONObject();
@@ -201,6 +206,7 @@ public class Books {
                 throw new RuntimeException("Không tìm thấy sách với mã: " + maSach);
             }
 
+            
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi cập nhật thông tin của một sách: " + e.getMessage());

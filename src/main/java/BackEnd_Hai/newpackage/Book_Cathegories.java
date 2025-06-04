@@ -55,4 +55,17 @@ public class Book_Cathegories {
         }
         return dsTheLoai;
     }
+
+    public void deleteBookCathegory(int maSach) {
+        String sql = "DELETE FROM theloai_sach WHERE MaSach = ?";
+
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maSach);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi xóa thể loại sách: " + e.getMessage());
+        }
+    }
 }
