@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Users {
+    
     public static void insertUser(String hoten, String ngaySinh, String phone, String email, String diachi, String password) {
         String sql = "INSERT INTO users (hoten, ngaySinh, phone, email, diachi, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();

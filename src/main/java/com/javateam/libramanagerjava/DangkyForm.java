@@ -25,11 +25,11 @@ public class DangkyForm extends javax.swing.JFrame {
         initComponents();
     }
     String driver = "org.postgresql.Driver";
-String url = "jdbc:postgresql://localhost:5432/DatabasecuaHan";
-String user = "postgres";
-String password = "vunghan@11";
-Statement st;
-ResultSet rs;
+    String url = "jdbc:postgresql://localhost:5432/DatabasecuaHan";
+    String user = "postgres";
+    String password = "vunghan@11";
+    Statement st;
+    ResultSet rs;
 
 
     /**
@@ -104,42 +104,41 @@ ResultSet rs;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(58, 58, 58)
-                                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4))
-                                        .addGap(20, 20, 20)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(64, 64, 64)
-                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel7))
-                                        .addGap(42, 42, 42)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtPass)
-                                            .addComponent(txtAdress)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel3)
+                                                .addComponent(jLabel4))
+                                            .addGap(36, 36, 36)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel7)
+                                            .addGap(58, 58, 58)
+                                            .addComponent(txtPass))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel5)
+                                                .addComponent(jLabel6))
+                                            .addGap(71, 71, 71)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtAdress)
+                                                .addComponent(txtEmail))))
+                                    .addComponent(jLabel2)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(77, 77, 77)
+                                .addGap(87, 87, 87)
                                 .addComponent(btnDKy)
-                                .addGap(48, 48, 48)
+                                .addGap(52, 52, 52)
                                 .addComponent(btnCancel2)))
-                        .addGap(0, 43, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(161, 161, 161))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,11 +147,11 @@ ResultSet rs;
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -172,13 +171,13 @@ ResultSet rs;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDKy)
                     .addComponent(btnCancel2))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -191,68 +190,67 @@ private String maXacNhan = null;
     String sdt = txtSDT.getText().trim();
     String email = txtEmail.getText().trim();
     String address = txtAdress.getText().trim();
-    String pass = txtPass.getText().trim();
-
+    String pass = new String(txtPass.getPassword()).trim();
+    User a = new User(name,date, sdt, email, address, pass);
     // 1. Kiểm tra rỗng
     if (name.equals("") || date.equals("") || sdt.equals("") || email.equals("") || address.equals("") || pass.equals("")) {
-        JOptionPane.showMessageDialog(this, "Không được để trống!");
+        JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
         return;
     }
-
-    // 2. Kiểm tra định dạng email
-    String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-    if (!email.matches(emailRegex)) {
-        JOptionPane.showMessageDialog(this, "Email không đúng định dạng!");
-        return;
-    }
-
-    // 3. Giả lập gửi mã xác thực
-    String code = String.valueOf((int)(Math.random() * 900000 + 100000)); // random 6 chữ số
-    JOptionPane.showMessageDialog(this, "Mã xác thực (giả lập): " + code);
-
-    // 4. Nhập mã xác thực
-    String inputCode = JOptionPane.showInputDialog(this, "Nhập mã xác thực:");
-    if (inputCode == null || !code.equals(inputCode.trim())) {
-        JOptionPane.showMessageDialog(this, "Mã xác thực không đúng!");
-        return;
-    }
-
-    // 5. Lưu vào CSDL
     try {
-        String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=TenCSDL;encrypt=true;trustServerCertificate=true";
-        String user = "sa";
-        String dbPassword = "matkhau";
-
-        Class.forName(driver);
-        Connection con = DriverManager.getConnection(url, user, dbPassword);
-        String sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, name);
-        ps.setString(2, date);
-        ps.setString(3, sdt);
-        ps.setString(4, email);
-        ps.setString(5, address);
-        ps.setString(6, pass);
-
-        int n = ps.executeUpdate();
-        if (n != 0) {
+            Users.insertUser(name,date, sdt, email, address, pass);
             JOptionPane.showMessageDialog(this, "Đăng ký thành công!");
-        } else {
-            JOptionPane.showMessageDialog(this, "Lỗi khi lưu dữ liệu!");
+            // Xóa các trường nhập liệu
+            txtName.setText("");
+            txtDate.setText("");
+            txtSDT.setText("");
+            txtEmail.setText("");
+            txtAdress.setText("");
+            txtPass.setText("");
+        } catch (Exception e) {
+            if (e.getMessage().contains("Họ tên hoặc email đã tồn tại")) {
+                JOptionPane.showMessageDialog(this, "Họ tên hoặc email đã tồn tại!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Lỗi khi đăng ký: " + e.getMessage());
+            }
         }
-
-        con.close();
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi kết nối CSDL!");
-    }
-
+    // 5. Lưu vào CSDL
+//    try {
+//        String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+//        String url = "jdbc:sqlserver://localhost:1433;databaseName=TenCSDL;encrypt=true;trustServerCertificate=true";
+//        String user = "sa";
+//        String dbPassword = "matkhau";
+//
+//        Class.forName(driver);
+//        Connection con = DriverManager.getConnection(url, user, dbPassword);
+//        String sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
+//        PreparedStatement ps = con.prepareStatement(sql);
+//        ps.setString(1, name);
+//        ps.setString(2, date);
+//        ps.setString(3, sdt);
+//        ps.setString(4, email);
+//        ps.setString(5, address);
+//        ps.setString(6, pass);
+//
+//        int n = ps.executeUpdate();
+//        if (n != 0) {
+//            JOptionPane.showMessageDialog(this, "Đăng ký thành công!");
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Lỗi khi lưu dữ liệu!");
+//        }
+//
+//        con.close();
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        JOptionPane.showMessageDialog(this, "Lỗi kết nối CSDL!");
+//    }
+//
 
     }//GEN-LAST:event_btnDKyActionPerformed
 
     private void btnCancel2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel2ActionPerformed
-         System.exit(0);
+        new MainForm().setVisible(true); // Hiện lại form chính 
+        dispose(); // Đóng form đăng ký
     }//GEN-LAST:event_btnCancel2ActionPerformed
 
     /**
@@ -302,6 +300,10 @@ private String maXacNhan = null;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtSDT;
     // End of variables declaration//GEN-END:variables
+
+    private Object newString(char[] password) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
  
 }
 

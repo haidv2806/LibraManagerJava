@@ -4,7 +4,10 @@
  */
 package com.javateam.libramanagerjava;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -18,6 +21,12 @@ public class LoginForm extends javax.swing.JFrame {
     public LoginForm() {
         initComponents();
     }
+    String driver = "org.postgresql.Driver";
+    String url = "jdbc:postgresql://localhost:5432/DatabasecuaHan";
+    String user = "postgres";
+    String password = "vunghan@11";
+    Statement st;
+    ResultSet rs;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -158,32 +167,34 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
-        String e = txtEmail.getText();
-        String p = new String (txtPass.getPassword());
-        StringBuilder sb = new StringBuilder();
-        if(e.equals("") ){
-            sb.append("Email is empty! \n");
-        }
-        if(p.equals("")){
-            sb.append("Password is empty! \n");
-        }
-        if(sb.length()>0){
-            JOptionPane.showMessageDialog(this, sb.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
+        String e = txtEmail.getText().trim();
+        String p = new String (txtPass.getPassword()).trim();
+       
+       if (e.equals("") || p.equals("")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy dủ thông tin!");
             return;
         }
-        if(e.equals("fpt") && p.equals("polytechnic")){
-             JOptionPane.showMessageDialog(this, "Login successfully! ");
-            return;
+        try {
+            User user = Users.getUserByEmail(e);
+            if (user != null) {
+                if (BCrypt.checkpw(p, user.getHashedPassword())) {
+                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+                    dispose(); // đóng form login
+                } else {
+                    JOptionPane.showMessageDialog(this, "Mật khẩu sai.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Email không tồn tại.");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
         }
-        else{
-             JOptionPane.showMessageDialog(this, "Invalid email or password", "Failure",JOptionPane.ERROR_MESSAGE);
-           
-        }
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-            // TODO add your handling code here:
-            System.exit(0);
+        new MainForm().setVisible(true); // Hiện lại form chính
+        dispose(); // Đóng form đăng nhập
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**

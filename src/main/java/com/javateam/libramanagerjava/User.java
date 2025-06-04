@@ -18,7 +18,14 @@ public class User {
         this.diachi = diachi;
         this.hashedPassword = hashedPassword;
     }
-
+    public User(String hoten, String ngaySinh, String phone, String email, String diachi,String hashedPassword) {
+        this.hoten = hoten;
+        this.ngaySinh = ngaySinh;
+        this.phone = phone;
+        this.email = email;
+        this.diachi = diachi;
+        this.hashedPassword = hashedPassword;
+    }
     public int getUserid() { return userid; }
     public String getHoten() { return hoten; }
     public String getNgaySinh() { return ngaySinh; }
