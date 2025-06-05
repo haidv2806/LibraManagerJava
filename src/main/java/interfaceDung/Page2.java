@@ -5,6 +5,10 @@
 package interfaceDung;
 
 import javax.swing.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +19,17 @@ import java.util.stream.Collectors;
  */
 
 import BackEnd_Hai.Books;
+import BackEnd_Hai.Cathegory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Page2 extends JFrame {
     private JFrame parent;
     private List<JPanel> genrePanels = new ArrayList<>();
     private JPanel genresContainer;
-    private String[] genreOptions = { "Hài", "Kinh dị", "Lãng mạn", "Khoa học", "Lịch sử" };
+
+    private List<JSONObject> genreOptions = new ArrayList<>();
+
     private JTextField nameField, authorField, publishCodeField;
     private JTextField priceField;
     private JTextArea descriptionArea;
@@ -35,6 +44,12 @@ public class Page2 extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+
+        // cho thể loại
+        JSONArray genresArray = new Cathegory().getAllCategories();
+        for (int i = 0; i < genresArray.length(); i++) {
+            genreOptions.add(genresArray.getJSONObject(i));
+        }
 
         // Nút đóng
         JButton closeButton = new JButton("X");
@@ -174,7 +189,12 @@ public class Page2 extends JFrame {
 
     private void addGenreField() {
         JPanel genrePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JComboBox<String> genreCombo = new JComboBox<>(genreOptions);
+
+        JComboBox<String> genreCombo = new JComboBox<>();
+        for (JSONObject obj : genreOptions) {
+            genreCombo.addItem(obj.getString("tenTL"));
+        }
+
         genreCombo.setPreferredSize(new Dimension(150, 25));
 
         JButton removeButton = new JButton("x");
@@ -206,13 +226,13 @@ public class Page2 extends JFrame {
         List<Integer> ids = new ArrayList<>();
         for (JPanel panel : genrePanels) {
             JComboBox<?> combo = (JComboBox<?>) panel.getComponent(0);
-            String genre = combo.getSelectedItem().toString();
-            switch (genre) {
-                case "Hài" -> ids.add(1);
-                case "Kinh dị" -> ids.add(2);
-                case "Lãng mạn" -> ids.add(3);
-                case "Khoa học" -> ids.add(4);
-                case "Lịch sử" -> ids.add(5);
+            String selectedGenre = combo.getSelectedItem().toString();
+
+            for (JSONObject genreObj : genreOptions) {
+                if (genreObj.getString("tenTL").equals(selectedGenre)) {
+                    ids.add(genreObj.getInt("maTL"));
+                    break;
+                }
             }
         }
         return ids;
