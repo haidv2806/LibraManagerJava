@@ -22,8 +22,8 @@ public class Main {
             // String result2 = books.getAllBookCreated(1);
             // System.out.println("📚 Các sách đã tạo: \n" + result2);
 
-            String result3 = books.getBookDetails(5);
-            System.out.println("🔍 Thông tin chi tiết sách: \n" + result3);
+            // String result3 = books.getBookDetails(5);
+            // System.out.println("🔍 Thông tin chi tiết sách: \n" + result3);
 
             // String result4 = books.editBook(2, "Sách sau khi sửa", 150000, "Mô tả sách sau khi sửa", 1);
             // System.out.println("kết quả sau khi cập nhậtnhật: " + result4);
@@ -33,7 +33,7 @@ public class Main {
 
                         // Thêm một volume mới cho sách có MaSach = 1
             Volume volume = new Volume();
-            // String addResult = volume.addVolume(3, "Volume 2", "/path/to/volume1.pdf");
+            // String addResult = volume.addVolume(9, "Volume 2", "/path/to/volume1.pdf");
             // System.out.println("Kết quả thêm volume: " + addResult);
 
             // // Xem danh sách volume của sách có MaSach = 1

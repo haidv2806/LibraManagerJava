@@ -130,9 +130,26 @@ public class Page1 extends JFrame {
                         "Bạn có chắc muốn xóa sách này?", "Xác nhận xóa",
                         JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    String bookId = (String) model.getValueAt(row, 0);
-                    allData.removeIf(data -> data[0].equals(bookId));
-                    model.removeRow(row);
+                    // String bookId = (String) model.getValueAt(row, 0);
+                    // allData.removeIf(data -> data[0].equals(bookId));
+                    // model.removeRow(row);
+                    try {
+                        String bookId = (String) model.getValueAt(row, 0);
+
+                        Books books = new Books();
+                        String result = books.deleteBook(Integer.parseInt(bookId));
+
+                        allData.removeIf(data -> data[0].equals(bookId));
+                        model.removeRow(row);
+
+                        JOptionPane.showMessageDialog(null, "Xóa sách thành công: " + result, "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Lỗi khi tải dữ liệu sách: " +
+                                e.getMessage(), "Lỗi",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
 
