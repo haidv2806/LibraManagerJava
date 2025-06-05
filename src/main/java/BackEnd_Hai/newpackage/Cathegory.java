@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.sql.ResultSet;
+
 // CREATE TABLE the_loai (
 //     MaTL SERIAL PRIMARY KEY,
 //     TenTL VARCHAR(50),
@@ -23,7 +27,7 @@ public class Cathegory {
         String sql = "INSERT INTO the_loai (MaTL, TenTL, MoTa) VALUES (?, ?, ?)";
 
         try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, maTL);
             stmt.setString(2, tenTL);
             stmt.setString(3, moTa);
@@ -40,7 +44,7 @@ public class Cathegory {
         String sql = "SELECT TenTL FROM the_loai WHERE MaTL = ?";
 
         try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, MaTL);
             return stmt.executeQuery().getString("TenTL");
         } catch (SQLException e) {
@@ -49,7 +53,7 @@ public class Cathegory {
         }
     }
 
-    public String getMultiTenTL(int[] MaTL){
+    public String getMultiTenTL(int[] MaTL) {
         if (MaTL.length == 0) {
             return null;
         }
@@ -64,7 +68,7 @@ public class Cathegory {
         sql.append(")");
 
         try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+                PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < MaTL.length; i++) {
                 stmt.setInt(i + 1, MaTL[i]);
             }
@@ -74,4 +78,27 @@ public class Cathegory {
             return null;
         }
     }
+
+    public JSONArray getAllCategories() {
+        String sql = "SELECT MaTL, TenTL FROM the_loai";
+        JSONArray result = new JSONArray();
+
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                JSONObject obj = new JSONObject();
+                obj.put("maTL", rs.getInt("MaTL"));
+                obj.put("tenTL", rs.getString("TenTL"));
+                result.put(obj);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 }
