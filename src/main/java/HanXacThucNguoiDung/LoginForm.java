@@ -13,6 +13,9 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author hanvn
  */
+
+
+ import interfaceDung.Page1;
 public class LoginForm extends javax.swing.JFrame {
 
     /**
@@ -178,7 +181,10 @@ public class LoginForm extends javax.swing.JFrame {
             User user = Users.getUserByEmail(e);
             if (user != null) {
                 if (BCrypt.checkpw(p, user.getHashedPassword())) {
-                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+                    
+                    Page1 trang1 = new Page1(user.getUserid());
+                    trang1.setVisible(true);
+                    // JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
                     dispose(); // đóng form login
                 } else {
                     JOptionPane.showMessageDialog(this, "Mật khẩu sai.");

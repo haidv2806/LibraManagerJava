@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         // Hiển thị trang 1 khi chương trình khởi chạy
         SwingUtilities.invokeLater(() -> {
-            Page1 trang1 = new Page1();
+            Page1 trang1 = new Page1(1);
             trang1.setVisible(true);
         });
     }

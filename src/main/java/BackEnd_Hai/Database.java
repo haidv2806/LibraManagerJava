@@ -14,6 +14,7 @@ public class Database {
     private static final HikariDataSource dataSource;
 
     static {
+        System.out.println("Connecting to database at " + dotenv.get("PG_HOST") + ":" + dotenv.get("PG_PORT") + "/" + dotenv.get("PG_DATABASE"));
         config.setJdbcUrl(String.format(
             "jdbc:postgresql://%s:%s/%s",
             dotenv.get("PG_HOST"),

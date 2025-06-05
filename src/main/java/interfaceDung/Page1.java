@@ -28,7 +28,7 @@ public class Page1 extends JFrame {
     private JTextField searchField;
     private List<Object[]> allData;
 
-    public Page1() {
+    public Page1(int maND) {
         setTitle("Trang 1 - Quản lý sách");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +67,7 @@ public class Page1 extends JFrame {
         // allData.add(new Object[]{"6", "Sách 6", "Tác giả 1", "Hải", "28/06/26", ""});
 
         try {
-            String books = new Books().getAllBookCreated(1);
+            String books = new Books().getAllBookCreated(maND);
             JSONArray arr = new JSONArray(books);
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
