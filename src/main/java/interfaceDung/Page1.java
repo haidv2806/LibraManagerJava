@@ -71,11 +71,23 @@ public class Page1 extends JFrame {
             JSONArray arr = new JSONArray(books);
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
+
+                JSONArray theLoaiArr = obj.optJSONArray("TheLoai");
+                String theLoaiStr = "";
+                if (theLoaiArr != null) {
+                    List<String> tenTLs = new ArrayList<>();
+                    for (int j = 0; j < theLoaiArr.length(); j++) {
+                        JSONObject tlObj = theLoaiArr.getJSONObject(j);
+                        tenTLs.add(tlObj.optString("TenTL", ""));
+                    }
+                    theLoaiStr = String.join(", ", tenTLs);
+                }
+
                 Object[] row = {
                         obj.get("MaSach").toString(),
                         obj.getString("TenSach"),
                         obj.optString("TenTacGia", ""),
-                        obj.optString("TenNXB", ""),
+                        theLoaiStr,
                         obj.optString("thoiGianTao", ""),
                         ""
                 };
@@ -83,7 +95,8 @@ public class Page1 extends JFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu sách: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu sách: " + e.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         // Tạo bảng danh sách sách
@@ -131,8 +144,8 @@ public class Page1 extends JFrame {
                 String genre = (String) model.getValueAt(row, 3);
                 String date = (String) model.getValueAt(row, 4);
 
-                Page2 editPage = new Page2(Page1.this, bookId);
-                editPage.setBookData(bookId, bookName, author, genre);
+                Page2 editPage = new Page2(Page1.this, bookId, maND);
+                // editPage.setBookData(bookId, bookName, author, genre);
                 editPage.setVisible(true);
                 setVisible(false);
             }
@@ -157,9 +170,14 @@ public class Page1 extends JFrame {
 
         // Sự kiện nút thêm sách
         addButton.addActionListener(e -> {
-            Page2 trang2 = new Page2(Page1.this, null);
+            Page2 trang2 = new Page2(Page1.this, null, maND);
             trang2.setVisible(true);
             setVisible(false);
+        });
+
+        backButton.addActionListener(e -> {
+            refreshData(maND);
+            JOptionPane.showMessageDialog(this, "Dữ liệu đã được làm mới!");
         });
 
         // Xử lý click vào mã sách
@@ -214,5 +232,43 @@ public class Page1 extends JFrame {
             }
         }
         search();
+    }
+
+    public void refreshData(int maND) {
+        allData.clear(); // Xóa dữ liệu cũ
+        try {
+            String books = new Books().getAllBookCreated(maND); // maND phải được lưu như biến instance
+            JSONArray arr = new JSONArray(books);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+
+                JSONArray theLoaiArr = obj.optJSONArray("TheLoai");
+                String theLoaiStr = "";
+                if (theLoaiArr != null) {
+                    List<String> tenTLs = new ArrayList<>();
+                    for (int j = 0; j < theLoaiArr.length(); j++) {
+                        JSONObject tlObj = theLoaiArr.getJSONObject(j);
+                        tenTLs.add(tlObj.optString("TenTL", ""));
+                    }
+                    theLoaiStr = String.join(", ", tenTLs);
+                }
+
+                Object[] row = {
+                        obj.get("MaSach").toString(),
+                        obj.getString("TenSach"),
+                        obj.optString("TenTacGia", ""),
+                        theLoaiStr,
+                        obj.optString("thoiGianTao", ""),
+                        ""
+                };
+                allData.add(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi làm mới dữ liệu: " + e.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        search(); // cập nhật lại bảng dựa trên dữ liệu mới
     }
 }
