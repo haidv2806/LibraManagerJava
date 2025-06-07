@@ -176,8 +176,26 @@ public class Books {
     }
 
     // Sửa thông tin sách
-    public String editBook(int maSach, String tenSach, int gia, String moTa, int maNXB, List<Integer> maTLList) {
-        String sql = "UPDATE sach SET TenSach = ?, Gia = ?, MoTa = ?, MaNXB = ? WHERE MaSach = ? RETURNING *";
+    public String editBook(int maSach, String tenSach, int gia, String moTa, String TenNXB, String TenTG, List<Integer> maTLList) {
+        String sql = "UPDATE sach SET TenSach = ?, Gia = ?, MoTa = ?, MaNXB = ?, MaTg = ? WHERE MaSach = ? RETURNING *";
+
+        Publisher publisher = new Publisher();
+        int maNXB = publisher.getMaNXB(TenNXB);
+        if (maNXB == -1) {
+            // Nếu chưa tồn tại, thêm NXB mới và lấy lại MaNXB
+            String jsonStr = publisher.addPublisher(TenNXB, "");
+            JSONObject json = new JSONObject(jsonStr);
+            maNXB = json.getInt("MaNXB");
+        }
+
+        Author author = new Author();
+        int maTG = author.getMaTG(TenTG);
+        if (maTG == -1) {
+            // Nếu chưa tồn tại, thêm tác giả mới và lấy lại MaTG
+            String jsonStr = author.addAuthor(TenTG, "");
+            JSONObject json = new JSONObject(jsonStr);
+            maTG = json.getInt("MaTG");
+        }
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -185,7 +203,8 @@ public class Books {
             stmt.setInt(2, gia);
             stmt.setString(3, moTa);
             stmt.setInt(4, maNXB);
-            stmt.setInt(5, maSach);
+            stmt.setInt(5, maTG);
+            stmt.setInt(6, maSach);
 
             ResultSet rs = stmt.executeQuery();
             Book_Cathegories book_cathegories = new Book_Cathegories();

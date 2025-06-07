@@ -69,11 +69,14 @@ public class Page5 extends JFrame {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
 
-        
+        Books book = new Books();
+        String bookDetails = book.getBookDetails(Integer.parseInt(bookId));
 
-        // addFormField(formPanel, "Tên sách:");
-        // addFormField(formPanel, "Tác giả:");
-        // addFormField(formPanel, "Nhà xuất bản:");
+        JSONObject bookJson = new JSONObject(bookDetails);
+        // Thêm trường nhập tên sách, tác giả, nhà xuất bản
+        addFormField(formPanel, "Tên sách:", bookJson.getString("TenSach"));
+        addFormField(formPanel, "Tác giả:", bookJson.getString("TenTacGia"));
+        addFormField(formPanel, "Nhà xuất bản:", bookJson.getString("TenNXB"));
 
         // Thêm trường nhập giá sách
         JPanel pricePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -81,6 +84,7 @@ public class Page5 extends JFrame {
         priceField = new JTextField(10);
         pricePanel.add(priceField);
         formPanel.add(pricePanel);
+        priceField.setText(String.valueOf(bookJson.getInt("Gia")));
 
         // Thêm trường nhập mô tả
         JPanel descPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -88,6 +92,7 @@ public class Page5 extends JFrame {
         descriptionArea = new JTextArea(3, 20);
         descPanel.add(new JScrollPane(descriptionArea));
         formPanel.add(descPanel);
+        descriptionArea.setText(bookJson.getString("MoTa"));
 
         // Thể loại
         JPanel genreLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -96,7 +101,27 @@ public class Page5 extends JFrame {
 
         genresContainer = new JPanel();
         genresContainer.setLayout(new BoxLayout(genresContainer, BoxLayout.Y_AXIS));
-        addGenreField();
+
+        // Thêm thể loại của Dung
+        // JPanel genreButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        // JButton addGenreButton = new JButton("+ Thêm thể loại");
+        // addGenreButton.setBackground(Color.GREEN);
+        // addGenreButton.addActionListener(e -> addGenreField());
+        // genreButtonPanel.add(addGenreButton);
+
+        // formPanel.add(genresContainer);
+        // formPanel.add(genreButtonPanel);
+
+        JSONArray theLoaiArr = bookJson.optJSONArray("TheLoai");
+        if (theLoaiArr != null && theLoaiArr.length() > 0) {
+            for (int i = 0; i < theLoaiArr.length(); i++) {
+                JSONObject tlObj = theLoaiArr.getJSONObject(i);
+                String tenTL = tlObj.optString("TenTL", "");
+                addGenreField(tenTL); // truyền tên thể loại cần chọn
+            }
+        } else {
+            addGenreField(); // nếu không có thì thêm 1 ô trống
+        }
 
         JPanel genreButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton addGenreButton = new JButton("+ Thêm thể loại");
@@ -108,7 +133,7 @@ public class Page5 extends JFrame {
         formPanel.add(genreButtonPanel);
 
         // Nút lưu
-        JButton saveButton = new JButton("Lưu");
+        JButton saveButton = new JButton("Thay đổi");
         saveButton.setBackground(Color.GREEN);
         saveButton.addActionListener(e -> {
             if (nameField == null || authorField == null || publishCodeField == null) {
@@ -146,13 +171,13 @@ public class Page5 extends JFrame {
                 }
                 String description = descriptionArea.getText().trim();
 
-                String result = middleware.BookMiddlewareAdd(
-                        publisherName,
-                        userid,
-                        author,
+                String result = middleware.editBook(
+                        Integer.parseInt(bookId),
                         bookName,
                         price,
                         description,
+                        publisherName,
+                        author,
                         genreIds);
 
                 JOptionPane.showMessageDialog(this, "Đã thêm sách: " + bookName);
@@ -175,48 +200,91 @@ public class Page5 extends JFrame {
 
     // Code của Dung
     // private void addFormField(JPanel panel, String label) {
-    //     JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    //     fieldPanel.add(new JLabel(label));
-    //     JTextField textField = new JTextField(20);
-    //     fieldPanel.add(textField);
-    //     panel.add(fieldPanel);
+    // JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    // fieldPanel.add(new JLabel(label));
+    // JTextField textField = new JTextField(20);
+    // fieldPanel.add(textField);
+    // panel.add(fieldPanel);
 
-    //     if (label.trim().equals("Tên sách:")) {
-    //         nameField = textField;
-    //     } else if (label.trim().equals("Tác giả:")) {
-    //         authorField = textField;
-    //     } else if (label.trim().equals("Nhà xuất bản:")) {
-    //         publishCodeField = textField;
-    //     }
+    // if (label.trim().equals("Tên sách:")) {
+    // nameField = textField;
+    // } else if (label.trim().equals("Tác giả:")) {
+    // authorField = textField;
+    // } else if (label.trim().equals("Nhà xuất bản:")) {
+    // publishCodeField = textField;
+    // }
     // }
 
     private void addFormField(JPanel panel, String label, String defaultValue) {
-    JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    fieldPanel.add(new JLabel(label));
-    
-    JTextField textField = new JTextField(20);
-    textField.setText(defaultValue); // <-- gán sẵn giá trị
+        JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        fieldPanel.add(new JLabel(label));
 
-    fieldPanel.add(textField);
-    panel.add(fieldPanel);
+        JTextField textField = new JTextField(20);
+        textField.setText(defaultValue); // <-- gán sẵn giá trị
 
-    switch (label.trim()) {
-        case "Tên sách:" -> nameField = textField;
-        case "Tác giả:" -> authorField = textField;
-        case "Nhà xuất bản:" -> publishCodeField = textField;
+        fieldPanel.add(textField);
+        panel.add(fieldPanel);
+
+        switch (label.trim()) {
+            case "Tên sách:" -> nameField = textField;
+            case "Tác giả:" -> authorField = textField;
+            case "Nhà xuất bản:" -> publishCodeField = textField;
+        }
     }
-}
 
+    // Dung đã làm
+    // private void addGenreField() {
+    // JPanel genrePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+    // JComboBox<String> genreCombo = new JComboBox<>();
+    // for (JSONObject obj : genreOptions) {
+    // genreCombo.addItem(obj.getString("tenTL"));
+    // }
+
+    // genreCombo.setPreferredSize(new Dimension(150, 25));
+
+    // JButton removeButton = new JButton("x");
+    // removeButton.setBackground(Color.GREEN);
+    // removeButton.setForeground(Color.WHITE);
+
+    // if (genrePanels.size() >= 1) {
+    // removeButton.addActionListener(e -> {
+    // genresContainer.remove(genrePanel);
+    // genrePanels.remove(genrePanel);
+    // genresContainer.revalidate();
+    // genresContainer.repaint();
+    // });
+    // } else {
+    // removeButton.setEnabled(false);
+    // }
+
+    // genrePanel.add(genreCombo);
+    // genrePanel.add(removeButton);
+
+    // genresContainer.add(genrePanel);
+    // genrePanels.add(genrePanel);
+
+    // genresContainer.revalidate();
+    // genresContainer.repaint();
+    // }
 
     private void addGenreField() {
+    addGenreField(null);
+}
+
+    private void addGenreField(String selectedGenre) {
         JPanel genrePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JComboBox<String> genreCombo = new JComboBox<>();
         for (JSONObject obj : genreOptions) {
             genreCombo.addItem(obj.getString("tenTL"));
         }
-
         genreCombo.setPreferredSize(new Dimension(150, 25));
+
+        // Nếu truyền vào tên thể loại, chọn sẵn
+        if (selectedGenre != null) {
+            genreCombo.setSelectedItem(selectedGenre);
+        }
 
         JButton removeButton = new JButton("x");
         removeButton.setBackground(Color.GREEN);
