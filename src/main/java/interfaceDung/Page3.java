@@ -23,7 +23,7 @@ public class Page3 extends JFrame {
     private JFrame parent;
     private DefaultTableModel model;
 
-    public Page3(JFrame parent, String bookId, String bookName) {
+    public Page3(JFrame parent, String bookId, String bookName, int maND) {
         this.parent = parent;
         setTitle("Trang 3 - Danh sách tập sách");
         setSize(800, 600);

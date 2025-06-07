@@ -10,8 +10,10 @@ import java.awt.*;
 
 public class Page6 extends JFrame {
     private JPanel genresContainer;
+    private JFrame parent;
 
-    public Page6(int bookId) {
+    public Page6(JFrame parent, int bookId) {
+        this.parent = parent;
         setTitle("Chi tiết sách");
         setSize(500, 600);
         setLocationRelativeTo(null);
@@ -79,12 +81,16 @@ public class Page6 extends JFrame {
         // Nút quay lại
         JButton backButton = new JButton("Quay lại");
         backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        backButton.addActionListener(evt -> dispose());
+        backButton.addActionListener(evt -> {
+            this.dispose();
+            if (parent != null)
+                parent.setVisible(true);
+        });
         mainPanel.add(Box.createVerticalStrut(15));
         mainPanel.add(backButton);
 
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        add(scrollPane);
+
+        setContentPane(mainPanel);
     }
 
     private JLabel createLabel(String text) {
@@ -96,7 +102,8 @@ public class Page6 extends JFrame {
 
     // Hiển thị từng thể loại theo tên
     private void loadGenres(JSONArray genres) {
-        if (genres == null) return;
+        if (genres == null)
+            return;
         for (int i = 0; i < genres.length(); i++) {
             try {
                 JSONObject obj = genres.getJSONObject(i);
@@ -108,12 +115,5 @@ public class Page6 extends JFrame {
                 // Nếu không phải JSONObject thì bỏ qua
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            int maSach = 1; // <-- Thay mã sách bạn muốn test
-            new Page6(maSach).setVisible(true);
-        });
     }
 }

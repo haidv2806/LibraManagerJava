@@ -197,21 +197,6 @@ public class Page1 extends JFrame {
             JOptionPane.showMessageDialog(this, "Dữ liệu đã được làm mới!");
         });
 
-        // Xử lý click vào mã sách
-        table.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                int row = table.rowAtPoint(evt.getPoint());
-                int col = table.columnAtPoint(evt.getPoint());
-                if (col == 0) {
-                    String bookId = (String) table.getValueAt(row, 0);
-                    String bookName = (String) table.getValueAt(row, 1);
-                    Page3 trang3 = new Page3(Page1.this, bookId, bookName);
-                    trang3.setVisible(true);
-                    setVisible(false);
-                }
-            }
-        });
-
         // Xử lý click vào mã sách hoặc tên sách
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -220,13 +205,13 @@ public class Page1 extends JFrame {
                 if (col == 0) {
                     String bookId = (String) table.getValueAt(row, 0);
                     String bookName = (String) table.getValueAt(row, 1);
-                    Page3 trang3 = new Page3(Page1.this, bookId, bookName);
+                    Page3 trang3 = new Page3(Page1.this, bookId, bookName, maND);
                     trang3.setVisible(true);
                     setVisible(false);
                 } else if (col == 1) { // Nếu click vào tên sách
                     String bookId = (String) table.getValueAt(row, 0);
                     int maSach = Integer.parseInt(bookId);
-                    Page6 trang6 = new Page6(maSach);
+                    Page6 trang6 = new Page6(Page1.this, maSach);
                     trang6.setVisible(true);
                     setVisible(false);
                 }
