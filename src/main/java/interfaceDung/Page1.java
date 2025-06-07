@@ -161,7 +161,7 @@ public class Page1 extends JFrame {
                 String genre = (String) model.getValueAt(row, 3);
                 String date = (String) model.getValueAt(row, 4);
 
-                Page2 editPage = new Page2(Page1.this, bookId, maND);
+                Page5 editPage = new Page5(Page1.this, bookId, maND);
                 // editPage.setBookData(bookId, bookName, author, genre);
                 editPage.setVisible(true);
                 setVisible(false);

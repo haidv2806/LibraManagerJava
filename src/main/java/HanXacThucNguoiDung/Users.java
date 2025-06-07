@@ -9,20 +9,20 @@ import javax.swing.JOptionPane;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-// CREATE TABLE IF NOT EXISTS users (
-//     userid SERIAL PRIMARY KEY,
+// CREATE TABLE IF NOT EXISTS nguoi_dung (
+//     MaND SERIAL PRIMARY KEY,
 //     hoten VARCHAR(20) NOT NULL,
 //     ngaySinh VARCHAR(10) NOT NULL,
-//     phone VARCHAR(20) NOT NULL,
+//     SoDT VARCHAR(20) NOT NULL,
 //     email VARCHAR(20) NOT NULL UNIQUE,
 //     diachi VARCHAR(50) NOT NULL,
-//     password VARCHAR(60) NOT NULL
+//     matkhau VARCHAR(60) NOT NULL
 // );
 
 public class Users {
     
     public static void insertUser(String hoten, String ngaySinh, String phone, String email, String diachi, String password) throws SQLException{
-        String sql = "INSERT INTO users (hoten, ngaySinh, phone, email, diachi, password) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO nguoi_dung (hoten, ngaySinh, SoDT, email, diachi, matkhau) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, hoten.length() > 20 ? hoten.substring(0, 20) : hoten);
@@ -45,20 +45,20 @@ public class Users {
     }
 
     public static User getUserByEmail(String email) {
-        String sql = "SELECT * FROM users WHERE email = ?";
+        String sql = "SELECT * FROM nguoi_dung WHERE email = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new User(
-                    rs.getInt("userid"),
+                    rs.getInt("MaND"),
                     rs.getString("hoten"),
                     rs.getString("ngaySinh"),
-                    rs.getString("phone"),
+                    rs.getString("SoDT"),
                     rs.getString("email"),
                     rs.getString("diachi"),
-                    rs.getString("password")
+                    rs.getString("matkhau")
                 );
             }
         } catch (SQLException e) {
