@@ -7,6 +7,7 @@ import BackEnd_Hai.Books;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 public class Page6 extends JFrame {
     private JPanel genresContainer;
@@ -38,7 +39,13 @@ public class Page6 extends JFrame {
             mainPanel.add(Box.createVerticalStrut(10));
             JLabel tacGiaLabel = createLabel("Tác giả: " + bookJson.optString("TenTacGia", ""));
             JLabel nxbLabel = createLabel("Nhà xuất bản: " + bookJson.optString("TenNXB", ""));
-            JLabel giaLabel = createLabel("Giá: " + bookJson.optInt("Gia", 0));
+            
+            int gia = bookJson.optInt("Gia", 0);
+            DecimalFormat df = new DecimalFormat("#,###");
+            String giaFormatted = df.format(gia) + " đ";
+            JLabel giaLabel = createLabel("Giá: " + giaFormatted);
+
+
             JLabel tgTaoLabel = createLabel("Thời gian tạo: " + bookJson.optString("thoiGianTao", ""));
             tacGiaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
             nxbLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -88,7 +95,6 @@ public class Page6 extends JFrame {
         });
         mainPanel.add(Box.createVerticalStrut(15));
         mainPanel.add(backButton);
-
 
         setContentPane(mainPanel);
     }

@@ -14,6 +14,9 @@ package BackEnd_Hai;
 //     FOREIGN KEY (MaTG) REFERENCES tac_gia(MaTG)
 // );
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,7 +52,7 @@ public class Books {
                 json.put("TenSach", rs.getString("TenSach"));
                 json.put("Gia", rs.getInt("Gia"));
                 json.put("MoTa", rs.getString("MoTa"));
-                json.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
+                json.put("thoiGianTao", formatTimestampToDateString(rs.getTimestamp("thoiGianTao")));
                 return json.toString();
             } else {
                 throw new RuntimeException("Không tạo được sách: " + TenSach);
@@ -117,7 +120,7 @@ public class Books {
                 book.put("MaND", rs.getInt("MaND"));
                 book.put("MaTG", rs.getInt("MaTG"));
                 book.put("TenSach", rs.getString("TenSach"));
-                book.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
+                book.put("thoiGianTao", formatTimestampToDateString(rs.getTimestamp("thoiGianTao")));
                 book.put("Gia", rs.getInt("Gia"));
                 book.put("MoTa", rs.getString("MoTa"));
                 book.put("TenNXB", rs.getString("TenNXB"));
@@ -159,7 +162,7 @@ public class Books {
                 book.put("MaND", rs.getInt("MaND"));
                 book.put("MaTG", rs.getInt("MaTG"));
                 book.put("TenSach", rs.getString("TenSach"));
-                book.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
+                book.put("thoiGianTao", formatTimestampToDateString(rs.getTimestamp("thoiGianTao")));
                 book.put("Gia", rs.getInt("Gia"));
                 book.put("MoTa", rs.getString("MoTa"));
                 book.put("TenNXB", rs.getString("TenNXB"));
@@ -250,5 +253,12 @@ public class Books {
             e.printStackTrace();
             throw new RuntimeException("Lỗi khi xóa sách: " + e.getMessage());
         }
+    }
+
+
+    public static String formatTimestampToDateString(Timestamp timestamp) {
+        if (timestamp == null) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(timestamp);
     }
 }
