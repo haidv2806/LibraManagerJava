@@ -19,6 +19,8 @@ import java.util.List;
  */
 
 import BackEnd_Hai.*;
+import HanXacThucNguoiDung.MainForm;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,9 +52,11 @@ public class Page1 extends JFrame {
         backButton.setBackground(Color.GREEN);
         JButton addButton = new JButton("Thêm sách");
         addButton.setBackground(Color.GREEN);
+        JButton logOutBtn = new JButton("thoát");
 
         buttonPanel.add(backButton);
         buttonPanel.add(addButton);
+        buttonPanel.add(logOutBtn);
 
         searchPanel.add(searchInputPanel, BorderLayout.WEST);
         searchPanel.add(buttonPanel, BorderLayout.EAST);
@@ -195,6 +199,19 @@ public class Page1 extends JFrame {
         backButton.addActionListener(e -> {
             refreshData(maND);
             JOptionPane.showMessageDialog(this, "Dữ liệu đã được làm mới!");
+        });
+
+        logOutBtn.addActionListener(e -> {
+            int res = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?",
+                    "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
+
+            // Xử lý phản hồi của người dùng
+            if (res == JOptionPane.YES_OPTION) {
+                // Ẩn cửa sổ hiện tại
+                this.setVisible(false);
+                // Trở lại giao diện chính
+                new MainForm().setVisible(true);
+            }
         });
 
         // Xử lý click vào mã sách hoặc tên sách

@@ -133,7 +133,7 @@ public class Page2 extends JFrame {
             }
 
             try {
-                Books middleware = new Books();
+                
 
                 int price = 0;
                 try {
@@ -143,7 +143,9 @@ public class Page2 extends JFrame {
                     return;
                 }
                 String description = descriptionArea.getText().trim();
-
+                
+                Books middleware = new Books();
+                
                 String result = middleware.BookMiddlewareAdd(
                         publisherName,
                         userid,
