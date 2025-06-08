@@ -1,6 +1,5 @@
 package com.javateam.libramanagerjava;
 
-import com.javateam.libramanagerjava.GiaoDien1;
 import javax.swing.SwingUtilities;
 
 public class main {
