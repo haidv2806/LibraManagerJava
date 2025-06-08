@@ -5,11 +5,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+
 
 public class FileEditorApp extends JFrame {
     private JTextField filePathField;
     private JTextArea textArea;
     private File selectedFile;
+    private JButton saveButton;
+    private File currentFile;
 
     public FileEditorApp() {
         setTitle("Trình chỉnh sửa file");
@@ -17,6 +24,7 @@ public class FileEditorApp extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
 
         // === Giao diện 1 ===
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -31,13 +39,12 @@ public class FileEditorApp extends JFrame {
         textArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
-
-        JButton saveBtn = new JButton("Lưu đè file");
-        add(saveBtn, BorderLayout.SOUTH);
+        JButton saveButton = new JButton("Lưu ");
+        topPanel.add(saveButton, BorderLayout.EAST);
 
         // === Sự kiện ===
         chooseFileBtn.addActionListener(e -> chooseFile());
-        saveBtn.addActionListener(e -> overwriteFile());
+        saveButton.addActionListener(e -> saveFileToFolder());
 
         setVisible(true);
     }
@@ -52,38 +59,78 @@ public class FileEditorApp extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = chooser.getSelectedFile();
             filePathField.setText(selectedFile.getAbsolutePath());
-            loadFileContent();
-        }
-    }
+            // saveFileToFolder();
 
-    private void loadFileContent() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
-            textArea.setText("");
-            String line;
-            while ((line = reader.readLine()) != null) {
-                textArea.append(line + "\n");
+        String path = selectedFile.getAbsolutePath();
+        try {
+                if (path.endsWith(".txt") || path.endsWith(".md")) {
+                    String content = Files.readString(selectedFile.toPath(), StandardCharsets.UTF_8);
+                    textArea.setText(content);
+                } else if (path.endsWith(".docx")) {
+                    textArea.setText(readDocx(selectedFile));
+                } else {
+                    JOptionPane.showMessageDialog(this, "Định dạng không được hỗ trợ!");
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Lỗi khi mở file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi đọc file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    private void overwriteFile() {
-        if (selectedFile == null) {
-            JOptionPane.showMessageDialog(this, "Chưa chọn file!", "Lỗi", JOptionPane.WARNING_MESSAGE);
-            return;
+        
+        private String readDocx(File file) {
+        StringBuilder sb = new StringBuilder();
+        try (FileInputStream fis = new FileInputStream(file);
+             XWPFDocument doc = new XWPFDocument(fis)) {
+            for (XWPFParagraph para : doc.getParagraphs()) {
+                sb.append(para.getText()).append("\n");
+            }
+        } catch (Exception e) {
+            sb.append("Lỗi đọc docx: ").append(e.getMessage());
         }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile))) {
-            writer.write(textArea.getText());
-            JOptionPane.showMessageDialog(this, "Đã lưu đè thành công!");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi lưu file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
+        return sb.toString();
     }
+    
+    private String saveFileToFolder() {
+        // if (selectedFile == null) {
+        //     JOptionPane.showMessageDialog(this, "Chưa chọn file!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+        //     return;
+        // }
+
+        // JFileChooser dirChooser = new JFileChooser();
+        // dirChooser.setDialogTitle("Chọn thư mục để lưu file");
+        // dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        // int userSelection = dirChooser.showSaveDialog(this);
+        // if (userSelection == JFileChooser.APPROVE_OPTION) {
+        //     File folder = dirChooser.getSelectedFile();
+
+            // Cho người dùng nhập tên file
+            // String fileName = JOptionPane.showInputDialog(this, "Nhập tên file:", "copy_" + System.currentTimeMillis());
+            // if (fileName == null || fileName.trim().isEmpty()) {
+            //     return; // Người dùng bấm Cancel hoặc không nhập
+            // }
+
+            // if (!fileName.endsWith(".txt")) {
+            //     fileName += ".txt";
+            // }
+            String folder = "D:/PHUONG"; // Thư mục lưu file
+            String fileName = System.currentTimeMillis() + ".txt"; // Tạo tên file tự động
+            File newFile = new File(folder, fileName);
+            try {
+                Files.write(newFile.toPath(), textArea.getText().getBytes("UTF-8"));
+                JOptionPane.showMessageDialog(this,
+                        "Đã lưu file tại:\n" + newFile.getAbsolutePath(),
+                        "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                        return newFile.getAbsolutePath();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Không thể lưu file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+        }
+// Compare this snippet from src/main/java/com/javateam/libramanagerjava/FileEditorApp.java:
+    
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FileEditorApp::new);
+        SwingUtilities.invokeLater(() -> new FileEditorApp().setVisible(true));
     }
 }
-
