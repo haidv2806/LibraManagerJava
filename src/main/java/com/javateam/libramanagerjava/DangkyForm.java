@@ -28,8 +28,6 @@ public class DangkyForm extends javax.swing.JFrame {
     String url = "jdbc:postgresql://localhost:5432/DatabasecuaHan";
     String user = "postgres";
     String password = "vunghan@11";
-    Statement st;
-    ResultSet rs;
 
 
     /**
@@ -191,7 +189,7 @@ private String maXacNhan = null;
     String email = txtEmail.getText().trim();
     String address = txtAdress.getText().trim();
     String pass = new String(txtPass.getPassword()).trim();
-    User a = new User(name,date, sdt, email, address, pass);
+    
     // 1. Kiểm tra rỗng
     if (name.equals("") || date.equals("") || sdt.equals("") || email.equals("") || address.equals("") || pass.equals("")) {
         JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
@@ -214,6 +212,8 @@ private String maXacNhan = null;
                 JOptionPane.showMessageDialog(this, "Lỗi khi đăng ký: " + e.getMessage());
             }
         }
+    
+    
     // 5. Lưu vào CSDL
 //    try {
 //        String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";

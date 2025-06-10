@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.javateam.libramanagerjava;
+
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author hanvn
@@ -59,7 +62,7 @@ public class MainForm extends javax.swing.JFrame {
         btnExit.setBackground(new java.awt.Color(204, 0, 51));
         btnExit.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnExit.setForeground(new java.awt.Color(255, 255, 255));
-        btnExit.setText("Thoát");
+        btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
@@ -135,6 +138,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDangkyActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // Hiển thị hộp thoại xác nhận
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
