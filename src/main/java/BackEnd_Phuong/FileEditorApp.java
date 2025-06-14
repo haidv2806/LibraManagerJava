@@ -110,21 +110,20 @@ public class FileEditorApp extends JFrame {
     }
 
     public static String readText(File file) {
-    StringBuilder sb = new StringBuilder();
-    try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line).append("\n");
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+
+        } catch (IOException e) {
+            sb.append("Lỗi đọc file văn bản: ").append(e.getMessage());
         }
-
-    } catch (IOException e) {
-        sb.append("Lỗi đọc file văn bản: ").append(e.getMessage());
+        return sb.toString();
     }
-    return sb.toString();
-}
-
 
     public String saveFileToFolder(String text) {
         // if (selectedFile == null) {

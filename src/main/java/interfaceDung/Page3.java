@@ -163,7 +163,7 @@ public class Page3 extends JFrame {
                 String volumeName = (String) model.getValueAt(row, 1);
                 String date = (String) model.getValueAt(row, 2);
 
-                Page4 editPage = new Page4(Page3.this, volumeId);
+                Page8 editPage = new Page8(Page3.this, volumeId, volumeName);
                 editPage.setVolumeData(volumeName);
                 editPage.setVisible(true);
                 setVisible(false);
