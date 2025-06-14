@@ -1,4 +1,4 @@
-package com.javateam.libramanagerjava;
+package BackEnd_Phuong;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-
 
 public class FileEditorApp extends JFrame {
     private JTextField filePathField;
@@ -25,7 +24,6 @@ public class FileEditorApp extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-
         // === Giao diện 1 ===
         JPanel topPanel = new JPanel(new BorderLayout());
         JButton chooseFileBtn = new JButton("Chọn File");
@@ -39,17 +37,35 @@ public class FileEditorApp extends JFrame {
         textArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
-        JButton saveButton = new JButton("Lưu ");
+        JButton saveButton = new JButton("Lưu");
         topPanel.add(saveButton, BorderLayout.EAST);
 
         // === Sự kiện ===
-        chooseFileBtn.addActionListener(e -> chooseFile());
-        saveButton.addActionListener(e -> saveFileToFolder());
+        chooseFileBtn.addActionListener(e -> {
+            String content = chooseFile(); // Gọi hàm đã sửa để lấy nội dung file
+            if (content != null) {
+                textArea.setText(content); // Gán nội dung vào textArea
+            }
+        });
+
+        saveButton.addActionListener(e -> {
+            String contentToSave = textArea.getText(); // Lấy nội dung từ textArea
+            if (contentToSave == null || contentToSave.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nội dung trống, không thể lưu!", "Cảnh báo",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            saveFileToFolder(contentToSave); // Gọi hàm đã sửa để lưu nội dung
+        });
 
         setVisible(true);
     }
 
-    private void chooseFile() {
+    public File getSelectedFile() {
+        return selectedFile;
+    }
+
+    public String chooseFile() {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Chỉ nhận file .docx, .md, .txt", "docx", "md", "txt");
@@ -59,28 +75,31 @@ public class FileEditorApp extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = chooser.getSelectedFile();
             filePathField.setText(selectedFile.getAbsolutePath());
-            // saveFileToFolder();
 
-        String path = selectedFile.getAbsolutePath();
-        try {
+            String path = selectedFile.getAbsolutePath();
+            try {
                 if (path.endsWith(".txt") || path.endsWith(".md")) {
                     String content = Files.readString(selectedFile.toPath(), StandardCharsets.UTF_8);
-                    textArea.setText(content);
+                    // textArea.setText(content);
+                    return content;
                 } else if (path.endsWith(".docx")) {
-                    textArea.setText(readDocx(selectedFile));
+                    return readDocx(selectedFile);
                 } else {
                     JOptionPane.showMessageDialog(this, "Định dạng không được hỗ trợ!");
+                    return null;
                 }
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Lỗi khi mở file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return null;
             }
         }
+        return null; // Người dùng hủy chọn file
     }
-        
-        private String readDocx(File file) {
+
+    public String readDocx(File file) {
         StringBuilder sb = new StringBuilder();
         try (FileInputStream fis = new FileInputStream(file);
-             XWPFDocument doc = new XWPFDocument(fis)) {
+                XWPFDocument doc = new XWPFDocument(fis)) {
             for (XWPFParagraph para : doc.getParagraphs()) {
                 sb.append(para.getText()).append("\n");
             }
@@ -89,11 +108,12 @@ public class FileEditorApp extends JFrame {
         }
         return sb.toString();
     }
-    
-    private String saveFileToFolder() {
+
+    public String saveFileToFolder(String text) {
         // if (selectedFile == null) {
-        //     JOptionPane.showMessageDialog(this, "Chưa chọn file!", "Lỗi", JOptionPane.WARNING_MESSAGE);
-        //     return;
+        // JOptionPane.showMessageDialog(this, "Chưa chọn file!", "Lỗi",
+        // JOptionPane.WARNING_MESSAGE);
+        // return;
         // }
 
         // JFileChooser dirChooser = new JFileChooser();
@@ -102,33 +122,34 @@ public class FileEditorApp extends JFrame {
 
         // int userSelection = dirChooser.showSaveDialog(this);
         // if (userSelection == JFileChooser.APPROVE_OPTION) {
-        //     File folder = dirChooser.getSelectedFile();
+        // File folder = dirChooser.getSelectedFile();
 
-            // Cho người dùng nhập tên file
-            // String fileName = JOptionPane.showInputDialog(this, "Nhập tên file:", "copy_" + System.currentTimeMillis());
-            // if (fileName == null || fileName.trim().isEmpty()) {
-            //     return; // Người dùng bấm Cancel hoặc không nhập
-            // }
+        // Cho người dùng nhập tên file
+        // String fileName = JOptionPane.showInputDialog(this, "Nhập tên file:", "copy_"
+        // + System.currentTimeMillis());
+        // if (fileName == null || fileName.trim().isEmpty()) {
+        // return; // Người dùng bấm Cancel hoặc không nhập
+        // }
 
-            // if (!fileName.endsWith(".txt")) {
-            //     fileName += ".txt";
-            // }
-            String folder = "D:/PHUONG"; // Thư mục lưu file
-            String fileName = System.currentTimeMillis() + ".txt"; // Tạo tên file tự động
-            File newFile = new File(folder, fileName);
-            try {
-                Files.write(newFile.toPath(), textArea.getText().getBytes("UTF-8"));
-                JOptionPane.showMessageDialog(this,
-                        "Đã lưu file tại:\n" + newFile.getAbsolutePath(),
-                        "Thành công", JOptionPane.INFORMATION_MESSAGE);
-                        return newFile.getAbsolutePath();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Không thể lưu file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }
+        // if (!fileName.endsWith(".txt")) {
+        // fileName += ".txt";
+        // }
+        String folder = "D:/PHUONG"; // Thư mục lưu file
+        String fileName = System.currentTimeMillis() + ".txt"; // Tạo tên file tự động
+        File newFile = new File(folder, fileName);
+        try {
+            Files.write(newFile.toPath(), text.getBytes("UTF-8"));
+            JOptionPane.showMessageDialog(this,
+                    "Đã lưu file tại:\n" + newFile.getAbsolutePath(),
+                    "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            return newFile.getAbsolutePath();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Không thể lưu file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
-// Compare this snippet from src/main/java/com/javateam/libramanagerjava/FileEditorApp.java:
-    
+    }
+    // Compare this snippet from
+    // src/main/java/com/javateam/libramanagerjava/FileEditorApp.java:
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new FileEditorApp().setVisible(true));

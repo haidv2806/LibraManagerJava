@@ -50,7 +50,7 @@ public class Page3 extends JFrame {
         JButton addVolumeButton = new JButton("Thêm tập mới");
         addVolumeButton.setBackground(Color.GREEN);
         addVolumeButton.addActionListener(e -> {
-            Page4 trang4 = new Page4(this, null);
+            Page4 trang4 = new Page4(this, bookId);
             trang4.setVisible(true);
             setVisible(false);
         });
