@@ -34,13 +34,13 @@ public class Volume {
                 volume.put("MaSach", rs.getInt("MaSach"));
                 volume.put("TenTap", rs.getString("TenTap"));
                 volume.put("ViTri", rs.getString("ViTri"));
-                volume.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
+                volume.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toLocalDateTime().toLocalDate().toString());
                 return volume.toString();
             } else {
                 throw new RuntimeException("Không thể thêm volume mới cho sách với id: " + maSach);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
             throw new RuntimeException("Lỗi khi thêm volume: " + e.getMessage());
         }
     }
@@ -61,7 +61,7 @@ public class Volume {
                 volume.put("MaSach", rs.getInt("MaSach"));
                 volume.put("TenTap", rs.getString("TenTap"));
                 volume.put("ViTri", rs.getString("ViTri"));
-                volume.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
+                volume.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toLocalDateTime().toLocalDate().toString());
                 volumes.put(volume);
             }
             return volumes.toString();
@@ -107,7 +107,7 @@ public class Volume {
                 volume.put("MaSach", rs.getInt("MaSach"));
                 volume.put("TenTap", rs.getString("TenTap"));
                 volume.put("ViTri", rs.getString("ViTri"));
-                volume.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toString());
+                volume.put("thoiGianTao", rs.getTimestamp("thoiGianTao").toLocalDateTime().toLocalDate().toString());
                 return volume.toString();
             } else {
                 throw new RuntimeException("Không tìm thấy volume với id: " + maTap);

@@ -129,6 +129,9 @@ public class Page3 extends JFrame {
                         "Bạn có chắc muốn xóa tập này?", "Xác nhận xóa",
                         JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
+                    String volumeId = (String) model.getValueAt(row, 0); // Lấy volumeId từ cột 0
+                    Volume volume = new Volume();
+                    volume.deleteVolume(Integer.parseInt(volumeId));
                     model.removeRow(row);
                 }
             }
