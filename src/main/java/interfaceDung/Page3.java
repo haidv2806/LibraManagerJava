@@ -22,7 +22,6 @@ import BackEnd_Hai.*;
 public class Page3 extends JFrame {
     private JFrame parent;
     private DefaultTableModel model;
-    private JTable table;
 
     public Page3(JFrame parent, String bookId, String bookName, int maND) {
         this.parent = parent;
@@ -60,14 +59,14 @@ public class Page3 extends JFrame {
         buttonPanel.add(closeButton);
         buttonPanel.add(addVolumeButton);
 
-        topPanel.add(buttonPanel, BorderLayout.EAST);
-
         JButton refreshButton = new JButton("Làm mới");
-        refreshButton.setBackground(Color.ORANGE);
+        refreshButton.setBackground(Color.GREEN);
         refreshButton.addActionListener(e -> {
             refreshData(bookId);
         });
         buttonPanel.add(refreshButton);
+
+        topPanel.add(buttonPanel, BorderLayout.EAST);
 
         // Tiêu đề sách
         JLabel titleLabel = new JLabel("Sách: " + bookName, SwingConstants.CENTER);
