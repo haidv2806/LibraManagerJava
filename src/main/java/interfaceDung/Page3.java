@@ -22,6 +22,7 @@ import BackEnd_Hai.*;
 public class Page3 extends JFrame {
     private JFrame parent;
     private DefaultTableModel model;
+    private JTable table;
 
     public Page3(JFrame parent, String bookId, String bookName, int maND) {
         this.parent = parent;
@@ -60,6 +61,13 @@ public class Page3 extends JFrame {
         buttonPanel.add(addVolumeButton);
 
         topPanel.add(buttonPanel, BorderLayout.EAST);
+
+        JButton refreshButton = new JButton("Làm mới");
+        refreshButton.setBackground(Color.ORANGE);
+        refreshButton.addActionListener(e -> {
+            refreshData(bookId);
+        });
+        buttonPanel.add(refreshButton);
 
         // Tiêu đề sách
         JLabel titleLabel = new JLabel("Sách: " + bookName, SwingConstants.CENTER);
@@ -187,6 +195,31 @@ public class Page3 extends JFrame {
                 model.setValueAt(date, i, 2);
                 break;
             }
+        }
+    }
+
+    public void refreshData(String bookId) {
+        try {
+            String volumes = new Volume().getVolumesByBook(Integer.parseInt(bookId));
+            JSONArray arr = new JSONArray(volumes);
+
+            // Xóa dữ liệu cũ
+            model.setRowCount(0);
+
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                Object[] row = {
+                        obj.get("MaTap").toString(),
+                        obj.getString("TenTap"),
+                        obj.optString("thoiGianTao", ""),
+                        ""
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi làm mới dữ liệu: " + e.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }
