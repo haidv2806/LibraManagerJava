@@ -96,7 +96,7 @@ public class FileEditorApp extends JFrame {
         return null; // Người dùng hủy chọn file
     }
 
-    public String readDocx(File file) {
+    public static String readDocx(File file) {
         StringBuilder sb = new StringBuilder();
         try (FileInputStream fis = new FileInputStream(file);
                 XWPFDocument doc = new XWPFDocument(fis)) {
@@ -108,6 +108,23 @@ public class FileEditorApp extends JFrame {
         }
         return sb.toString();
     }
+
+    public static String readText(File file) {
+    StringBuilder sb = new StringBuilder();
+    try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+
+    } catch (IOException e) {
+        sb.append("Lỗi đọc file văn bản: ").append(e.getMessage());
+    }
+    return sb.toString();
+}
+
 
     public String saveFileToFolder(String text) {
         // if (selectedFile == null) {

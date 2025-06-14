@@ -122,6 +122,27 @@ public class Page3 extends JFrame {
         table.getColumnModel().getColumn(3).setPreferredWidth(150);
 
         table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
+
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = table.rowAtPoint(evt.getPoint());
+                int column = table.columnAtPoint(evt.getPoint());
+
+                // Nếu cột được click là cột "Tên tập"
+                if (column == 1 && row >= 0) {
+                    String volumeId = (String) model.getValueAt(row, 0);
+                    String volumeName = (String) model.getValueAt(row, 1);
+
+                    // Mở trang chi tiết tập
+                    Page7 page = new Page7(Integer.parseInt(volumeId));
+                    // page.setVolumeData(volumeName);
+                    page.setVisible(true);
+                    setVisible(false);
+                }
+            }
+        });
+
         table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JCheckBox()) {
             @Override
             protected void deleteRow(int row) {
