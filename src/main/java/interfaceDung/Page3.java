@@ -142,7 +142,7 @@ public class Page3 extends JFrame {
                     String volumeName = (String) model.getValueAt(row, 1);
 
                     // Mở trang chi tiết tập
-                    Page7 page = new Page7(Integer.parseInt(volumeId));
+                    Page7 page = new Page7(Page3.this, Integer.parseInt(volumeId));
                     // page.setVolumeData(volumeName);
                     page.setVisible(true);
                     setVisible(false);

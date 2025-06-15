@@ -11,7 +11,7 @@ import java.io.File;
 public class Page7 extends JFrame {
     private JTextArea contentArea;
 
-    public Page7(int maTap) {
+    public Page7(JFrame parent ,int maTap) {
         setTitle("Đọc truyện - Tập " + maTap);
         setSize(700, 600);
         setLocationRelativeTo(null);
@@ -55,7 +55,10 @@ public class Page7 extends JFrame {
 
         // Nút đóng
         JButton closeBtn = new JButton("Đóng");
-        closeBtn.addActionListener(e -> dispose());
+            closeBtn.addActionListener(e -> {
+            if (parent != null) parent.setVisible(true);
+            dispose();
+        });
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.add(closeBtn);
         mainPanel.add(btnPanel, BorderLayout.SOUTH);
