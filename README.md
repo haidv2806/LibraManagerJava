@@ -14,8 +14,8 @@
 
 ### 🔧 Yêu cầu trước khi bắt đầu:
 - [Java JDK](https://www.oracle.com/java/technologies/downloads/)
-- [Apache Maven] (https://maven.apache.org/download.cgi)
-- [PostgreSQL] (https://www.postgresql.org/download/)
+- [Apache Maven](https://maven.apache.org/download.cgi)
+- [PostgreSQL](https://www.postgresql.org/download/)
 
 ---
 
