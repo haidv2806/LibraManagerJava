@@ -13,6 +13,18 @@ import java.sql.ResultSet;
 //     TenTL VARCHAR(50),
 //     MoTa VARCHAR(1000)
 // );
+// INSERT INTO the_loai (TenTL, MoTa) VALUES
+// ('Hành động', 'Thể loại phim với nhiều cảnh đánh nhau, rượt đuổi và các pha nguy hiểm.'),
+// ('Tình cảm', 'Phim xoay quanh các mối quan hệ tình cảm giữa các nhân vật.'),
+// ('Kinh dị', 'Thể loại phim nhằm gây sợ hãi, hồi hộp với các yếu tố siêu nhiên hoặc tâm lý.'),
+// ('Hài hước', 'Phim có nội dung vui nhộn, gây tiếng cười cho khán giả.'),
+// ('Phiêu lưu', 'Phim kể về hành trình khám phá, mạo hiểm ở những vùng đất mới.'),
+// ('Khoa học viễn tưởng', 'Phim khai thác các yếu tố công nghệ tương lai, không gian, thời gian, người ngoài hành tinh.'),
+// ('Hoạt hình', 'Phim được sản xuất bằng kỹ thuật hoạt họa, thường dành cho mọi lứa tuổi.'),
+// ('Chiến tranh', 'Phim lấy bối cảnh các cuộc chiến tranh lịch sử hoặc hiện đại.'),
+// ('Tài liệu', 'Phim phản ánh hiện thực, cung cấp thông tin và kiến thức về một lĩnh vực cụ thể.'),
+// ('Hình sự', 'Phim tập trung vào các vụ án, quá trình điều tra và phá án của cảnh sát.');
+
 
 public class Cathegory {
     // private int MaTL;
